@@ -1,0 +1,5 @@
+{
+  "watch": ["./routes", "./swagger"],
+  "ext": "js,json",
+  "ignore": ["./swagger/swagger-output.json"]
+}
