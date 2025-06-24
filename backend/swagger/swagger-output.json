@@ -23,6 +23,16 @@
           }
         }
       }
+    },
+    "/test": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
     }
   }
 }

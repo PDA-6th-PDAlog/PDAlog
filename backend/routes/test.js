@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const testController = require('../controller/testController');
+const testController = require("../controller/testController");
 
 /**
  * @swagger
@@ -14,6 +14,6 @@ const testController = require('../controller/testController');
  *       200:
  *         description: 성공
  */
-router.get('/', testController.getAllTests);
+router.get("/test", testController.getAllTests);
 
 module.exports = router;
