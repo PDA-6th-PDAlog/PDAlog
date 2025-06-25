@@ -28,12 +28,22 @@ export default function CreateStudyPage() {
     const file = e.target.files?.[0];
     if (file) {
       setForm((prev) => ({ ...prev, thumbnail: file }));
-      setPreviewUrl(URL.createObjectURL(file)); // ✅ 미리보기 URL 생성
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // 날짜 유효성 검사 추가
+    const start = new Date(form.startDate);
+    const end = new Date(form.endDate);
+
+    if (start > end) {
+      alert("⚠️ 종료일자는 시작일자보다 빠를 수 없어요!");
+      return;
+    }
+
     const formData = new FormData();
     Object.entries(form).forEach(([key, value]) => {
       if (value) formData.append(key, value);
@@ -44,71 +54,90 @@ export default function CreateStudyPage() {
       body: formData,
     });
 
-    alert("스터디가 생성되었습니다!");
+    alert("🎉 스터디가 귀엽게 생성되었습니다!");
+  };
+
+  // 날짜 차이 계산 함수
+  const getTotalDays = (start: string, end: string) => {
+    if (!start || !end) return null;
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    const diff = endDate.getTime() - startDate.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+    return days > 0 ? days : null;
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-12">
-      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md border border-gray-200 p-8">
-        <h4 className="text-base font-medium mb-4 text-gray-800">
-          스터디 생성
+    <main className="container py-5">
+      <div
+        className="mx-auto p-4 border rounded-4 shadow-sm bg-light-subtle"
+        style={{ maxWidth: "700px" }}>
+        <h4 className="mb-4 text-center fw-semibold text-dark">
+          🌱 스터디 생성
         </h4>
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-sm">
-          <div>
-            <label className="block mb-1">스터디 제목</label>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label className="form-label">스터디 제목</label>
             <input
               type="text"
               name="title"
-              className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+              className="form-control rounded-3"
               value={form.title}
               onChange={handleChange}
               required
             />
           </div>
 
-          <div>
-            <label className="block mb-1">스터디 설명</label>
+          <div className="mb-3">
+            <label className="form-label">스터디 설명</label>
             <textarea
               name="description"
+              className="form-control rounded-3"
               rows={3}
-              className="w-full px-3 py-1.5 border border-gray-300 rounded-md resize-none"
               value={form.description}
               onChange={handleChange}
-              required
-            />
+              required></textarea>
           </div>
 
-          <div className="flex gap-4">
-            <div className="flex-1">
-              <label className="block mb-1">시작일자</label>
+          <div className="row g-3 mb-3">
+            <div className="col">
+              <label className="form-label">시작일자</label>
               <input
                 type="date"
                 name="startDate"
-                className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                className="form-control rounded-3"
                 value={form.startDate}
                 onChange={handleChange}
                 required
               />
             </div>
-            <div className="flex-1">
-              <label className="block mb-1">종료일자</label>
+            <div className="col">
+              <label className="form-label">종료일자</label>
               <input
                 type="date"
                 name="endDate"
-                className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+                className="form-control rounded-3"
                 value={form.endDate}
                 onChange={handleChange}
                 required
               />
             </div>
+            {form.startDate &&
+              form.endDate &&
+              getTotalDays(form.startDate, form.endDate) && (
+                <div className="text-muted small mt-1">
+                  총 {getTotalDays(form.startDate, form.endDate)}일간
+                  진행됩니다.
+                </div>
+              )}
           </div>
 
-          <div>
-            <label className="block mb-1">주간 인증 빈도</label>
+          <div className="mb-3">
+            <label className="form-label">주간 인증 빈도</label>
             <select
               name="frequency"
-              className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+              className="form-select w-auto rounded-3"
               value={form.frequency}
               onChange={handleChange}>
               <option value="1">주 1회</option>
@@ -118,42 +147,43 @@ export default function CreateStudyPage() {
             </select>
           </div>
 
-          <div>
-            <label className="block mb-1">벌금 금액 (원)</label>
+          <div className="mb-3">
+            <label className="form-label">💸 벌금 금액 (원)</label>
             <input
               type="number"
               name="penalty"
-              className="w-full px-3 py-1.5 border border-gray-300 rounded-md"
+              className="form-control w-auto rounded-3"
               placeholder="예: 5000"
               value={form.penalty}
               onChange={handleChange}
+              min="0"
               required
             />
           </div>
 
-          <div>
-            <label className="block mb-1">썸네일 이미지</label>
+          <div className="mb-3">
+            <label className="form-label">썸네일 이미지</label>
             <input
               type="file"
               accept="image/*"
+              className="form-control rounded-3"
               onChange={handleFileChange}
-              className="text-sm w-full"
             />
             {previewUrl && (
-              // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={previewUrl}
                 alt="썸네일 미리보기"
-                className="mt-4 w-48 h-auto rounded border"
+                className="mt-3 img-thumbnail rounded-4 border border-secondary"
+                style={{ width: "200px", height: "auto" }}
               />
             )}
           </div>
 
-          <div className="pt-2">
+          <div className="text-end mt-4">
             <button
               type="submit"
-              className="px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 transition">
-              스터디 생성
+              className="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+              스터디 생성하기
             </button>
           </div>
         </form>
