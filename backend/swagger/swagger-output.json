@@ -5,7 +5,7 @@
     "description": "스터디 모집 플랫폼 API 문서",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:3001",
   "basePath": "/",
   "schemes": [
     "http"
