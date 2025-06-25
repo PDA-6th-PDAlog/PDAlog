@@ -84,7 +84,11 @@ export default function StudySection({
         backgroundColor: "white",
         padding: "1rem",
         marginBottom: "2rem",
+        height: "30vh",
+        width: "100vh",
+        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)", // 여기!
       }}
+      className="border-gray-200 border-2"
     >
       <h2 style={{ fontSize, marginBottom: "1rem", fontWeight: "bold" }}>
         {title}
@@ -94,8 +98,8 @@ export default function StudySection({
           <div
             key={study.id}
             style={{
-              width: "100px",
-              height: "100px",
+              width: "20vh",
+              height: "20vh",
               backgroundColor: "white",
               borderRadius: "8px",
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
@@ -104,7 +108,7 @@ export default function StudySection({
           >
             {study.imageUrl ? (
               <img
-                src={study.imageUrl}
+                src="/assets/sh.png"
                 alt={study.title || "스터디"}
                 style={{
                   width: "100%",

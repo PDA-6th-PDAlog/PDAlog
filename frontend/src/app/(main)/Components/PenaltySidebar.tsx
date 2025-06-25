@@ -23,7 +23,7 @@ export default function PenaltySidebar({ title, users }: PenaltySidebarProps) {
   return (
     <aside
       style={{
-        width: "250px",
+        width: "30vh",
         backgroundColor: "#f8f8f8",
         padding: "1rem",
         borderRight: "1px solid #ccc",
@@ -46,7 +46,7 @@ export default function PenaltySidebar({ title, users }: PenaltySidebarProps) {
                 width: "40px",
                 height: "40px",
                 borderRadius: "50%",
-                backgroundColor: "#4caf50",
+                backgroundColor: "white",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

@@ -30,12 +30,12 @@ export default function PenaltyBarChart({ data }: Props) {
     <div
       style={{
         width: "100%",
-        height: "300px",
+        height: "20vh",
         padding: "1rem",
       }}
     >
-      <h3 style={{ color: "white", textAlign: "center", marginBottom: "1rem" }}>
-        각 스터디별 벌금랭킹 ⚠️
+      <h3 style={{ color: "black", textAlign: "center", marginBottom: "1rem" }}>
+        ⚠️ 각 스터디별 벌금랭킹 ⚠️
       </h3>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>

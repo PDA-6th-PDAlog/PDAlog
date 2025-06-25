@@ -2,10 +2,11 @@ import StudySection from "./(main)/Components/StudySection";
 import PenaltySidebar from "./(main)/Components/PenaltySidebar";
 import { userList } from "./(main)/Components/PenaltySidebar";
 import PenaltyBarChart from "./(main)/Components/PenaltyBarChart";
+import "../assets/styles/font.css";
 
 const myStudies = [
-  { id: 1, title: "스터디 A" },
-  { id: 2, title: "스터디 B" },
+  { id: 1, title: "스터디 A", imageUrl: "/assets/sh.png" },
+  { id: 2, title: "스터디 B", imageUrl: "/assets/sh.png" },
 ];
 
 const thumbnail = {
@@ -28,11 +29,22 @@ const studyPenaltyData = [
 export default function HomePage() {
   return (
     <div
-      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        fontFamily: "MyFont",
+      }}
     >
       {/* 콘텐츠 영역: 메인 + 사이드바 가로 배치 */}
       <div style={{ display: "flex", flexGrow: 1 }}>
-        <main style={{ flexGrow: 1, padding: "2rem", backgroundColor: "#fff" }}>
+        <main
+          style={{
+            flexGrow: 1,
+            padding: "3rem 10rem",
+            backgroundColor: "#fff",
+          }}
+        >
           <StudySection
             title="참여중인 스터디"
             list={myStudies}
@@ -41,9 +53,9 @@ export default function HomePage() {
           <StudySection
             title="다른 스터디 둘러보기"
             list={thumbnail.list}
-            fontSize="1.25rem"
+            fontSize="1.5rem"
           />
-          <button>스터디 만들기</button>
+          <button style={{}}>스터디 만들기</button>
         </main>
 
         <PenaltySidebar title="벌금 순위" users={userList} />
