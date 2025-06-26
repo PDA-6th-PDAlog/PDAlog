@@ -32,6 +32,8 @@ export default function PenaltyBarChart({ data }: Props) {
         width: "100%",
         height: "20vh",
         padding: "1rem",
+        borderLeft: "1px solid #ccc",
+        borderRight: "1px solid #ccc",
       }}
     >
       <h3 style={{ color: "black", textAlign: "center", marginBottom: "1rem" }}>

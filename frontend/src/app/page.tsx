@@ -1,8 +1,9 @@
-import StudySection from "./(main)/Components/StudySection";
-import PenaltySidebar from "./(main)/Components/PenaltySidebar";
-import { userList } from "./(main)/Components/PenaltySidebar";
-import PenaltyBarChart from "./(main)/Components/PenaltyBarChart";
+import StudySection from "../layouts/ComponentsInMain/StudySection";
+import PenaltySidebar from "../layouts/ComponentsInMain/PenaltySidebar";
+import { userList } from "../layouts/ComponentsInMain/PenaltySidebar";
+import PenaltyBarChart from "../layouts/ComponentsInMain/PenaltyBarChart";
 import "../assets/styles/font.css";
+import { Container } from "react-bootstrap";
 
 const myStudies = [
   { id: 1, title: "스터디 A", imageUrl: "/assets/sh.png" },
@@ -34,37 +35,51 @@ export default function HomePage() {
         flexDirection: "column",
         minHeight: "100vh",
         fontFamily: "MyFont",
+        backgroundImage: "url('/assets/bg_top.png')",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "50% 0", // ✅ 가로 중앙, 세로 맨 위
+        backgroundSize: "cover",
+        position: "relative",
+        zIndex: 0,
       }}
     >
       {/* 콘텐츠 영역: 메인 + 사이드바 가로 배치 */}
-      <div style={{ display: "flex", flexGrow: 1 }}>
+      <div
+        style={{
+          display: "flex",
+          flexGrow: 1,
+        }}
+      >
         <main
           style={{
+            borderLeft: "1px solid #ccc",
+            borderRight: "1px solid #ccc",
             flexGrow: 1,
-            padding: "3rem 10rem",
-            backgroundColor: "#fff",
+            // padding: "3rem 30vh",
           }}
         >
-          <StudySection
-            title="참여중인 스터디"
-            list={myStudies}
-            fontSize="1.5rem"
-          />
-          <StudySection
-            title="다른 스터디 둘러보기"
-            list={thumbnail.list}
-            fontSize="1.5rem"
-          />
-          <button style={{}}>스터디 만들기</button>
+          <Container>
+            <StudySection
+              title="참여중인 스터디"
+              list={myStudies}
+              fontSize="1.5rem"
+            />
+            <StudySection
+              title="다른 스터디 둘러보기"
+              list={thumbnail.list}
+              fontSize="1.5rem"
+            />
+            <button style={{}}>스터디 만들기</button>
+
+            <PenaltyBarChart data={studyPenaltyData} />
+          </Container>
         </main>
 
         <PenaltySidebar title="벌금 순위" users={userList} />
       </div>
 
       {/* ✅ Footer: 막대 그래프 */}
-      <footer style={{ padding: "1rem 0" }}>
-        <PenaltyBarChart data={studyPenaltyData} />
-      </footer>
+      <footer></footer>
     </div>
   );
 }
