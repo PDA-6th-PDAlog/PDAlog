@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { Form, Button, Container, Image } from "react-bootstrap";
 
@@ -7,13 +8,16 @@ export default function SignupPage() {
     email: "",
     name: "",
     password: "",
-    profileImage: null,
+    profileImage: null as File | null,
     authCode: "",
   });
+
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("handle change");
     const { name, value, files } = e.target;
+
     if (name === "profileImage" && files && files.length > 0) {
       const file = files[0];
       setForm((prev) => ({ ...prev, profileImage: file }));
@@ -32,10 +36,69 @@ export default function SignupPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("회원가입 제출! (백엔드 미연동)");
-    console.log(form);
+
+    let imageUrl = "";
+
+    // 1. 프로필 이미지가 있으면 먼저 업로드
+    if (form.profileImage) {
+      const imageData = new FormData();
+      imageData.append("file", form.profileImage);
+
+      try {
+        const uploadRes = await fetch("http://localhost:3001/test/upload", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: imageData,
+        });
+
+        const uploadResult = await uploadRes.json();
+        if (uploadRes.ok && uploadResult.url) {
+          imageUrl = uploadResult.url; // 예: http://localhost:3001/uploads/파일명.jpg
+        } else {
+          alert("이미지 업로드 실패: " + uploadResult.message);
+          return;
+        }
+      } catch (error) {
+        console.error("이미지 업로드 에러:", error);
+        alert("이미지 업로드 중 오류 발생");
+        return;
+      }
+    }
+
+    // 2. 회원가입 JSON payload 구성
+    const payload = {
+      username: form.name,
+      email: form.email,
+      passwd: form.password,
+      profile_image: imageUrl,
+      authCode: form.authCode,
+    };
+
+    try {
+      const res = await fetch("http://localhost:3001/signUp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert("회원가입 성공!");
+        console.log(data);
+      } else {
+        alert("회원가입 실패: " + data.message);
+      }
+    } catch (error) {
+      console.error("회원가입 에러:", error);
+      alert("서버 통신 중 오류가 발생했습니다.");
+    }
   };
 
   return (
@@ -82,7 +145,7 @@ export default function SignupPage() {
           />
         </Form.Group>
 
-        {/* 프로필 이미지 (드래그 앤 드롭 영역) */}
+        {/* 프로필 이미지 */}
         <Form.Group className="mb-3">
           <Form.Label>프로필 사진</Form.Label>
           <div
@@ -115,7 +178,6 @@ export default function SignupPage() {
             )}
           </div>
 
-          {/* 숨겨진 input */}
           <Form.Control
             type="file"
             accept="image/*"
