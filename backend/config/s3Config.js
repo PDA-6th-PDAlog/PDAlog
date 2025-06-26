@@ -1,4 +1,4 @@
-// s3.js
+// s3Config.js
 const { S3Client } = require('@aws-sdk/client-s3');
 
 const s3Config = new S3Client({

@@ -17,19 +17,39 @@ export default function StudyProgressSection() {
         }
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!uploadedFile) {
             alert("이미지를 업로드해주세요.");
             return;
         }
 
         if (window.confirm("제출하시겠습니까?")) {
-            console.log("이미지:", uploadedFile);
-            console.log("텍스트:", inputText);
+            const formData = new FormData();
+            formData.append("file", uploadedFile);
+            formData.append("content", inputText);
+            formData.append("studyId", "36"); // 예시: 알고리즘 스터디 id
+            formData.append("userId", "1");   // 예시: 로그인 유저 id
+            formData.append("weekDate", new Date().toISOString().split("T")[0]); // 예: 2025-07-01
 
-            setShowModal(false);
-            setUploadedFile(null);
-            setInputText("");
+            try {
+                const response = await fetch("http://localhost:3001/myStudyInfo/studyAuth", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!response.ok) throw new Error("업로드 실패");
+
+                const result = await response.json();
+                console.log(result);
+                alert("인증이 완료되었습니다.");
+
+                setShowModal(false);
+                setUploadedFile(null);
+                setInputText("");
+            } catch (error) {
+                console.error(error);
+                alert("업로드 중 오류 발생");
+            }
         }
     };
 

@@ -11,4 +11,13 @@ router.post(
   studyRoomController.createStudyRoom
 );
 
+router.get(
+  "/:id",
+  async (req, res, next) => {
+    console.log(`[ROUTER] GET /study-rooms/${req.params.id} 요청 들어옴`);
+    next();
+  },
+  studyRoomController.getStudyRoom
+);
+
 module.exports = router;
