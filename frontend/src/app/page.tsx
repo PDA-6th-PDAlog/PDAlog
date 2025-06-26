@@ -12,9 +12,8 @@ const myStudies = [
 
 const thumbnail = {
   list: [
-    { id: 3, title: "다른 스터디 1", imageUrl: "/thumb1.jpg" },
-    { id: 4, title: "다른 스터디 2", imageUrl: "/thumb2.jpg" },
-    { id: 5, title: "다른 스터디 3" },
+    { id: 3, title: "다른 스터디 1", imageUrl: "/assets/sh.png" },
+    { id: 4, title: "다른 스터디 2", imageUrl: "/assets/sh.png" },
   ],
 };
 
@@ -35,10 +34,6 @@ export default function HomePage() {
         flexDirection: "column",
         minHeight: "100vh",
         fontFamily: "MyFont",
-        backgroundImage: "url('/assets/bg_top.png')",
-        backgroundRepeat: "no-repeat",
-        backgroundPosition: "50% 0", // ✅ 가로 중앙, 세로 맨 위
-        backgroundSize: "cover",
         position: "relative",
         zIndex: 0,
       }}
@@ -58,18 +53,23 @@ export default function HomePage() {
             // padding: "3rem 30vh",
           }}
         >
-          <Container>
+          <Container
+            style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem" }}
+          >
             <StudySection
               title="참여중인 스터디"
               list={myStudies}
               fontSize="1.5rem"
+              createBoxLabel="스터디 만들기"
+              createBoxLink="/createStudy"
             />
             <StudySection
               title="다른 스터디 둘러보기"
               list={thumbnail.list}
               fontSize="1.5rem"
+              createBoxLabel="스터디 더 둘러보기"
+              createBoxLink="/createStudy"
             />
-            <button style={{}}>스터디 만들기</button>
 
             <PenaltyBarChart data={studyPenaltyData} />
           </Container>

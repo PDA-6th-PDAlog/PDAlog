@@ -34,6 +34,7 @@ export default function PenaltyBarChart({ data }: Props) {
         padding: "1rem",
         borderLeft: "1px solid #ccc",
         borderRight: "1px solid #ccc",
+        marginBottom: "2rem",
       }}
     >
       <h3 style={{ color: "black", textAlign: "center", marginBottom: "1rem" }}>
@@ -55,7 +56,7 @@ export default function PenaltyBarChart({ data }: Props) {
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={topStudies.includes(entry.study) ? "#FFD700" : "#ccc"} // 노랑 or 회색
+                fill={topStudies.includes(entry.study) ? "#0046ff" : "#ccc"} // 노랑 or 회색
               />
             ))}
             <LabelList
