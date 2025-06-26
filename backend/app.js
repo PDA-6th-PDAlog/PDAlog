@@ -10,12 +10,20 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var testRouter = require("./routes/test");
 
+const myStudyInfoRouter = require("./routes/myStudyInfo");
+var studyRoomRouter = require("./routes/studyRoomRoutes");
+var signUpRouter = require("./routes/signUp");
+
+const cors = require("cors");
+
 var app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+app.use(cors());
+app.use(express.json());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,7 +34,11 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/", testRouter);
+app.use("/study-rooms", studyRoomRouter);
+app.use("/test", testRouter);
+app.use("/signUp", signUpRouter);
+app.use("/myStudyInfo", myStudyInfoRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

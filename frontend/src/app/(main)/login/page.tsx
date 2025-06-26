@@ -1,62 +1,71 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
-import { redirect } from "next/navigation";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { Form, Button, Container } from "react-bootstrap";
 
-export default function Login() {
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
-  const router = useRouter(); //
+export default function LoginPage() {
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
 
-  // const handleSubmit = async () => {
-  // 	const email = emailRef.current?.value;
-  // 	const password = passwordRef.current?.value;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-  // 	const response = await fetch('http://localhost:4000/users/login', {
-  // 		method: 'POST',
-  // 		headers: {
-  // 			'Content-Type': 'application/json',
-  // 		},
-  // 		body: JSON.stringify({ email, password }),
-  // 	});
+  const handleLogin = (e) => {
+    e.preventDefault();
+    alert("로그인 버튼 클릭! (백엔드 미연동)");
+    console.log(form);
+  };
 
-  // 	router.push('/boards');
-  // };
+  const handleGoToSignup = () => {
+    // TODO: 회원가입 페이지로 이동 (라우터 연동 필요)
+    alert("회원가입 페이지로 이동");
+  };
 
   return (
-    <div
-      style={{
-        backgroundImage: `url("/wave.jpeg")`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        width: "100vw",
-        height: "100vh",
-      }}
-    >
-      <h1 style={{ fontSize: "1rem", padding: "10px" }}>회원가입</h1>
+    <Container className="mt-5" style={{ maxWidth: "480px" }}>
+      <h2 className="mb-4 text-center">로그인</h2>
+      <Form onSubmit={handleLogin}>
+        <Form.Group className="mb-3" controlId="loginEmail">
+          <Form.Label>이메일</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="example@example.com"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group>
 
-      <input
-        type="text"
-        ref={emailRef}
-        placeholder="00000@naver.com"
-        style={{ border: "2px solid #ccc" }}
-      />
+        <Form.Group className="mb-4" controlId="loginPassword">
+          <Form.Label>비밀번호</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="********"
+            name="password"
+            value={form.password}
+            onChange={handleChange}
+            required
+            minLength={8}
+          />
+        </Form.Group>
 
-      <div style={{ padding: "10px" }}> </div>
-      <div>
-        <input
-          type="text"
-          ref={passwordRef}
-          placeholder="비밀번호"
-          style={{ border: "2px solid #ccc" }}
-        />
-      </div>
-      <button style={{ marginTop: "20px", border: "2px solid #ccc" }}>
-        로그인하기
-      </button>
-    </div>
+        <Button variant="primary" type="submit" className="w-100 mb-3">
+          로그인
+        </Button>
+
+        <Button
+          variant="outline-secondary"
+          className="w-100"
+          onClick={handleGoToSignup}
+        >
+          회원가입
+        </Button>
+      </Form>
+    </Container>
   );
 }
