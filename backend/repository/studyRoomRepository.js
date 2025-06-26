@@ -9,16 +9,18 @@ export async function create(roomData) {
     penalty_amount,
     host_id,
     weekly_required_count,
+    thumbnail_url,
   } = roomData;
 
   try {
     const result = await pool.execute(
       `INSERT INTO STUDY_ROOMS 
-        (title, description, start_date, end_date, penalty_amount, host_id, weekly_required_count)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        (title, description, thumbnail_url, start_date, end_date, penalty_amount, host_id, weekly_required_count)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         title,
         description,
+        thumbnail_url || null,
         start_date,
         end_date,
         penalty_amount,
