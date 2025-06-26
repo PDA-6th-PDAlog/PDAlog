@@ -26,7 +26,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/", testRouter);
+app.use("/test", testRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
