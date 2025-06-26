@@ -35,26 +35,58 @@ export default function CreateStudyPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 날짜 유효성 검사 추가
+    // 날짜 유효성 검사
     const start = new Date(form.startDate);
     const end = new Date(form.endDate);
-
     if (start > end) {
       alert("⚠️ 종료일자는 시작일자보다 빠를 수 없어요!");
       return;
     }
 
-    const formData = new FormData();
-    Object.entries(form).forEach(([key, value]) => {
-      if (value) formData.append(key, value);
-    });
+    try {
+      let thumbnailUrl = null;
 
-    await fetch("/api/study", {
-      method: "POST",
-      body: formData,
-    });
+      if (form.thumbnail) {
+        const imageForm = new FormData();
+        imageForm.append("file", form.thumbnail);
 
-    alert("🎉 스터디가 귀엽게 생성되었습니다!");
+        const uploadRes = await fetch("http://localhost:3001/test/upload", {
+          method: "POST",
+          body: imageForm,
+        });
+
+        const uploadData = await uploadRes.json();
+        thumbnailUrl = uploadData.url; // <- 정상 시 URL 저장
+      }
+
+      // 2. 스터디룸 생성 요청
+      const payload = {
+        title: form.title,
+        description: form.description,
+        start_date: form.startDate,
+        end_date: form.endDate,
+        penalty_amount: Number(form.penalty),
+        host_id: 1,
+        weekly_required_count: Number(form.frequency),
+        thumbnail_url: thumbnailUrl,
+      };
+
+      const studyRes = await fetch("http://localhost:3001/study-rooms", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!studyRes.ok) throw new Error("스터디 생성 실패");
+
+      alert("🎉 스터디가 생성되었습니다!");
+      // 필요하면 페이지 이동도 가능: router.push("/studies");
+    } catch (err) {
+      console.error("❌ 오류 발생:", err);
+      alert("😢 오류가 발생했어요. 다시 시도해 주세요.");
+    }
   };
 
   // 날짜 차이 계산 함수
