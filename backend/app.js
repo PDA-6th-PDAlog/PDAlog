@@ -9,7 +9,10 @@ const swaggerFile = require("./swagger/swagger-output.json");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var testRouter = require("./routes/test");
+
 const myStudyInfoRouter = require("./routes/myStudyInfo");
+var studyRoomRouter = require("./routes/studyRoomRoutes");
+
 const cors = require('cors');
 
 var app = express();
@@ -30,6 +33,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/study-rooms", studyRoomRouter);
 app.use("/test", testRouter);
 app.use("/myStudyInfo", myStudyInfoRouter);
 
