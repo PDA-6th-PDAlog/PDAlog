@@ -4,7 +4,7 @@ const multer = require('multer');
 const fs = require('fs');
 
 const testController = require("../controller/testController");
-const {uploadFile} = require("../service/upladS3Service");
+const {uploadFile} = require("../service/uploadS3Service");
 const {extname} = require("node:path");
 
 /**

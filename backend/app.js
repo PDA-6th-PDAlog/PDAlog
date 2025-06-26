@@ -11,7 +11,11 @@ const swaggerFile = require("./swagger/swagger-output.json");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var testRouter = require("./routes/test");
+
+const myStudyInfoRouter = require("./routes/myStudyInfo");
 var studyRoomRouter = require("./routes/studyRoomRoutes");
+
+const cors = require('cors');
 
 var app = express();
 
@@ -20,7 +24,11 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(cors());
+<<<<<<< feat/challengeCreate
 app.use(express.json());
+=======
+
+>>>>>>> main
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -33,6 +41,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/study-rooms", studyRoomRouter);
 app.use("/test", testRouter);
+app.use("/myStudyInfo", myStudyInfoRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
