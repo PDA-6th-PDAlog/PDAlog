@@ -9,6 +9,7 @@ const swaggerFile = require("./swagger/swagger-output.json");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var testRouter = require("./routes/test");
+var studyRoomRouter = require("./routes/studyRoomRoutes");
 
 var app = express();
 
@@ -26,6 +27,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/study-rooms", studyRoomRouter);
 app.use("/test", testRouter);
 
 // catch 404 and forward to error handler
