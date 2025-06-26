@@ -19,4 +19,19 @@ async function createStudyRoom(req, res) {
   }
 }
 
-module.exports = { createStudyRoom };
+async function getStudyRoom(req, res) {
+  const { id } = req.params;
+  try {
+    const study = await studyRoomService.getStudyRoom(Number(id));
+    if (!study) {
+      return res.status(404).json({ message: "스터디가 존재하지 않습니다." });
+    }
+
+    res.status(200).json(study);
+  } catch (error) {
+    console.error("[CONTROLLER ERROR]", error);
+    res.status(500).json({ message: "서버 오류 발생" });
+  }
+}
+
+module.exports = { createStudyRoom, getStudyRoom };

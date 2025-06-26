@@ -48,3 +48,31 @@ export async function create(roomData) {
     throw err;
   }
 }
+
+export async function findById(studyId) {
+  // 스터디룸 기본 정보 조회
+  const [rows, fields] = await pool.execute(
+    `SELECT id, title, description, thumbnail_url, start_date, end_date, penalty_amount, weekly_required_count
+   FROM STUDY_ROOMS
+   WHERE id = ?`,
+    [studyId]
+  );
+
+  if (!rows || rows.length === 0) return null;
+  const study = rows;
+
+  // 참여 멤버 조회
+  const members = await pool.execute(
+    `SELECT u.username AS nickname, u.profile_image
+     FROM STUDY_MEMBERS sm
+     JOIN USERS u ON sm.user_id = u.id
+     WHERE sm.study_id = ?`,
+    [studyId]
+  );
+  console.log(members);
+
+  return {
+    ...study,
+    members,
+  };
+}
