@@ -35,11 +35,17 @@ export default function AppNavbar() {
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+<<<<<<< feature/main
         <Navbar.Collapse
           id="responsive-navbar-nav"
           className="justify-content-end"
         >
           <Nav className="d-flex gap-2">
+=======
+
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="d-flex justify-content-end gap-2 w-100">
+>>>>>>> main
             <Nav.Link
               as={Link}
               href="/login"
@@ -54,7 +60,7 @@ export default function AppNavbar() {
             </Nav.Link>
             <Nav.Link
               as={Link}
-              href="/signup"
+              href="/signUp"
               style={{
                 backgroundColor: "#007bff",
                 color: "white",
