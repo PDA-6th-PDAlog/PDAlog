@@ -1,5 +1,3 @@
-const cors = require("cors");
-
 var createError = require("http-errors");
 var express = require("express");
 var path = require("path");
@@ -15,7 +13,7 @@ var testRouter = require("./routes/test");
 const myStudyInfoRouter = require("./routes/myStudyInfo");
 var studyRoomRouter = require("./routes/studyRoomRoutes");
 
-const cors = require('cors');
+const cors = require("cors");
 
 var app = express();
 
@@ -24,11 +22,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(cors());
-<<<<<<< feat/challengeCreate
 app.use(express.json());
-=======
-
->>>>>>> main
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
