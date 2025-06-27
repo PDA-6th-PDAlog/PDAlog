@@ -1,6 +1,64 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+
 export default function Page() {
+  const params = useParams<{ id: string }>();
+  const userId = params.id;
+
+  const [userData, setUserData] = useState<{
+    username: string;
+    email: string;
+    profile_image: string;
+  } | null>(null);
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/profile/${userId}`);
+        const result = await res.json();
+        console.log("응답 데이터:", result);
+
+        if (result.success && result.data.length > 0) {
+          setUserData(result.data[0]);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`http://localhost:3001/profile/${userId}`);
+        const result = await res.json();
+        console.log("응답 데이터:", result);
+
+        if (result.success && result.data.length > 0) {
+          setUserData(result.data[0]);
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [userId]);
+
   const studyData = [
     {
       name: "알고리즘 스터디",

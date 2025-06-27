@@ -8,13 +8,13 @@ const mainRepository = require("../repository/mainRepository");
 
 async function getAllStudies() {
   const result = await mainRepository.findAll();
-  console.log("🔥 mainService getAllStudies result:", result);
+  // console.log("🔥 mainService getAllStudies result:", result);
   return result;
 }
 
 async function getMyStudyRooms(userId) {
   const rows = await mainRepository.getMyStudyRooms(userId);
-  console.log("🔥 getMyStudyRooms controller:", rows);
+  // console.log("🔥 getMyStudyRooms controller:", rows);
   return rows;
 }
 module.exports = {

@@ -99,7 +99,8 @@ export default function StudyProgressSection({studyRoomInfo, myAuthCount, weekly
                     <div
                         onDrop={handleDrop}
                         onDragOver={(e) => e.preventDefault()}
-                        className="border-2 border-dashed border-gray-400 rounded p-4 text-center mb-3">
+                        className="border-2 border-dashed border-gray-400 rounded p-4 text-center mb-3"
+                    >
                         {uploadedFile ? (
                             <div>
                                 <p>{uploadedFile.name}</p>
@@ -110,7 +111,21 @@ export default function StudyProgressSection({studyRoomInfo, myAuthCount, weekly
                                 />
                             </div>
                         ) : (
-                            <p>이미지를 이 영역에 드래그 앤 드롭 하세요</p>
+                            <>
+                                <p className="mb-2">이미지를 드래그 앤 드롭 하거나 파일을 선택하세요</p>
+                                <div className="border-1 border-gray-200">
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file && file.type.startsWith("image/")) {
+                                                setUploadedFile(file);
+                                            }
+                                        }}
+                                    />
+                                </div>
+                            </>
                         )}
                     </div>
 
