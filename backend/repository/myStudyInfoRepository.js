@@ -102,4 +102,32 @@ export async function getStudyRoomInfo(studyRoomId) {
   }
 }
 
-export async function getStudyRoomUserInfo(userId, studyRoomId) {}
+export async function getStudyRoomMemberProfile(userId, studyRoomId) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const rows = await conn.query(
+        `
+      SELECT 
+        u.id AS user_id,
+        u.username,
+        u.profile_image
+      FROM 
+        STUDY_MEMBERS sm
+      JOIN 
+        USERS u ON sm.user_id = u.id
+      WHERE 
+        sm.study_id = ?
+      `,
+        [studyRoomId]
+    );
+
+    return rows;
+  } catch (err) {
+    console.error("getStudyRoomMemberProfile error:", err);
+    throw err;
+  } finally {
+    if (conn) conn.release();
+  }
+}
