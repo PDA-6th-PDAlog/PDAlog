@@ -49,9 +49,6 @@ export default function SignupPage() {
       try {
         const uploadRes = await fetch("http://localhost:3001/test/upload", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
           body: imageData,
         });
 
@@ -155,8 +152,7 @@ export default function SignupPage() {
               document.getElementById("profileImageInput")?.click()
             }
             className="border border-dashed border-secondary rounded p-4 text-center"
-            style={{ cursor: "pointer", backgroundColor: "#f9f9f9" }}
-          >
+            style={{ cursor: "pointer", backgroundColor: "#f9f9f9" }}>
             {previewImage ? (
               <div>
                 <Image
