@@ -13,6 +13,7 @@ var testRouter = require("./routes/test");
 const myStudyInfoRouter = require("./routes/myStudyInfo");
 var studyRoomRouter = require("./routes/studyRoomRoutes");
 var signUpRouter = require("./routes/signUp");
+var loginRouter = require("./routes/login");
 
 const cors = require("cors");
 
@@ -38,7 +39,7 @@ app.use("/study-rooms", studyRoomRouter);
 app.use("/test", testRouter);
 app.use("/signUp", signUpRouter);
 app.use("/myStudyInfo", myStudyInfoRouter);
-
+app.use("/login", loginRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
