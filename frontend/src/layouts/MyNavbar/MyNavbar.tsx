@@ -5,8 +5,29 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
 import "../../assets/styles/font.css";
+import {useEffect, useState} from "react";
 
 export default function AppNavbar() {
+
+    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+
+    useEffect(() => {
+        console.log("isLoggedIn", isLoggedIn);
+
+        fetch("http://localhost:3001/users/protected", {
+            credentials: "include",
+        }).then((res) => res.json())
+            .then((data) => {
+                if (data.isLoggedIn) {
+                    setIsLoggedIn(true);
+                } else {
+                    setIsLoggedIn(false);
+                }
+            })
+            .catch(() => setIsLoggedIn(false));
+    }, []);
+
+
   return (
     <Navbar collapseOnSelect expand="lg" style={{}}>
       <Container
@@ -43,6 +64,7 @@ export default function AppNavbar() {
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <div>
+
           <Nav.Link
             as={Link}
             href="/login"
@@ -54,6 +76,7 @@ export default function AppNavbar() {
             }}>
             로그인
           </Nav.Link>
+
           <Nav.Link
             as={Link}
             href="/signUp"
