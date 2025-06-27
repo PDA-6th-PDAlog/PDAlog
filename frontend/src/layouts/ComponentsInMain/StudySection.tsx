@@ -60,8 +60,7 @@ export default function StudySection({
         boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
         marginBottom: "2rem",
         padding: "1rem",
-      }}
-    >
+      }}>
       <h2 style={{ fontSize, marginBottom: "1rem", fontWeight: "bold" }}>
         {title}
       </h2>
@@ -77,8 +76,7 @@ export default function StudySection({
               borderRadius: "8px",
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               flex: "0 0 auto",
-            }}
-          >
+            }}>
             {study.imageUrl ? (
               <img
                 src={study.imageUrl}
@@ -100,8 +98,7 @@ export default function StudySection({
                   justifyContent: "center",
                   color: "#aaa",
                   fontSize: "12px",
-                }}
-              >
+                }}>
                 {study.title || "No Title"}
               </div>
             )}
@@ -132,15 +129,13 @@ export default function StudySection({
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = "#ccc";
             e.currentTarget.style.backgroundColor = "white";
-          }}
-        >
+          }}>
           <div
             style={{
               fontSize: "1rem",
               color: "black",
               fontWeight: "bold",
-            }}
-          >
+            }}>
             {createBoxLabel}
           </div>
         </div>

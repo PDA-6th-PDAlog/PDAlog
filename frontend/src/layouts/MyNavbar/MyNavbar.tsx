@@ -15,8 +15,7 @@ export default function AppNavbar() {
           maxWidth: "1200px",
           margin: "0 auto",
           padding: "2rem",
-        }}
-      >
+        }}>
         <Navbar.Brand
           as={Link}
           href="/"
@@ -24,8 +23,7 @@ export default function AppNavbar() {
             display: "flex",
 
             alignItems: "center",
-          }}
-        >
+          }}>
           <div style={{ display: "flex", flex: "flex-start" }}>
             <img
               src="/assets/신한투자증권.png"
@@ -37,8 +35,7 @@ export default function AppNavbar() {
                 fontFamily: "MyLogoFont",
                 color: "#0046ff",
                 fontSize: "20px",
-              }}
-            >
+              }}>
               PDA_LOG
             </div>
           </div>
@@ -54,20 +51,18 @@ export default function AppNavbar() {
               color: "white",
               borderRadius: "8px",
               padding: "6px 12px",
-            }}
-          >
+            }}>
             로그인
           </Nav.Link>
           <Nav.Link
             as={Link}
-            href="/signup"
+            href="/signUp"
             style={{
               backgroundColor: "#007bff",
               color: "white",
               borderRadius: "8px",
               padding: "6px 12px",
-            }}
-          >
+            }}>
             회원가입
           </Nav.Link>
         </div>
