@@ -1,5 +1,6 @@
 const loginRepository = require("../repository/loginRepository");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.login = async (email, password) => {
   const user = await loginRepository.findByEmail(email);
@@ -12,5 +13,21 @@ exports.login = async (email, password) => {
     throw new Error("비밀번호가 일치하지 않습니다.");
   }
 
-  return user;
+  const token = jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      username: user.username,
+      profile_image: user.profile_image,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: process.env.JWT_EXPIRES_IN }
+  );
+
+  delete user.passwd;
+
+  return {
+    user,
+    token,
+  };
 };
