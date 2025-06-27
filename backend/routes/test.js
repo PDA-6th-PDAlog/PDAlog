@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const multer = require('multer');
-const fs = require('fs');
+const multer = require("multer");
+const fs = require("fs");
 
 const testController = require("../controller/testController");
-const {uploadFile} = require("../service/uploadS3Service");
-const {extname} = require("node:path");
+const { uploadFile } = require("../service/uploadS3Service");
+const { extname } = require("node:path");
 
 /**
  * @swagger
@@ -20,22 +20,27 @@ const {extname} = require("node:path");
  */
 router.get("/", testController.getAllTests);
 
-const upload = multer({dest: 'uploads/'})
+const upload = multer({
+  dest: "uploads/",
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+});
 
-router.post('/upload', upload.single('file'), async (req, res) => {
-    try {
-        const localFilePath = req.file.path;
-        const s3Key = Date.now() + extname(req.file.originalname);
-        const result = await uploadFile(localFilePath, s3Key);
+router.post("/upload", upload.single("file"), async (req, res) => {
+  try {
+    console.log(req.file);
+    const localFilePath = req.file.path;
+    const s3Key = Date.now() + extname(req.file.originalname);
+    const result = await uploadFile(localFilePath, s3Key);
 
-        fs.unlinkSync(localFilePath);
+    fs.unlinkSync(localFilePath);
 
-        res.json({ url: result.Location });
-    } catch (err) {
-        console.error('Upload error:', err);
-        res.status(500).json({ error: 'S3 upload failed' });
-    }
-
+    res.json({ url: result.Location });
+  } catch (err) {
+    console.error("Upload error:", err);
+    res.status(500).json({ error: "S3 upload failed" });
+  }
 });
 
 module.exports = router;
