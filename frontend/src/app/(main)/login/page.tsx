@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -37,7 +38,13 @@ export default function LoginPage() {
       const data = await res.json();
       console.log("로그인 성공:", data);
 
-      alert("로그인 성공! 토큰: " + data.token);
+      Cookies.set("token", data.data.token, {
+        expires: 1, // 1일간 유지
+        secure: false, // HTTPS 환경에서만 (개발 중엔 false 가능)
+        sameSite: "Lax", // CSRF 방지
+      });
+
+      alert("로그인 성공!");
       // TODO: 토큰 저장 & 페이지 이동 (ex: localStorage.setItem("token", data.token))
     } catch (err) {
       console.error("로그인 실패:", err);
