@@ -18,6 +18,7 @@ export async function calculateFineRanking() {
         `SELECT study_id FROM STUDY_MEMBERS WHERE user_id = ?`,
         [user.id]
       );
+
       let total_fine = 0;
 
       for (const study of studies) {
@@ -35,17 +36,19 @@ export async function calculateFineRanking() {
 
         const weeksPassed = Math.floor(lastDate.diff(startDate, "day") / 7);
 
+
         // 인증한 주차 수 계산 (유저 - 스터디)
         const countPassWeek = await pool.execute(
           `SELECT count(*) as count FROM WEEKLY_STUDIES WHERE study_id = ? and user_id = ? `,
           [study.study_id, user.id]
         );
         const certifiedWeeks = Number(countPassWeek[0].count);
-        console.log("인증완료 주차 수 :", certifiedWeeks);
+        // console.log("인증완료 주차 수 :", certifiedWeeks);
 
         total_fine +=
           (weeksPassed - certifiedWeeks) * study_info[0].penalty_amount;
       }
+
 
       result.push({
         username: user.username,
