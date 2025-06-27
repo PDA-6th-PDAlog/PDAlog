@@ -38,7 +38,7 @@ export default function LoginPage() {
       const data = await res.json();
       console.log("로그인 성공:", data);
 
-      Cookies.set("token", data.data.token, {
+      Cookies.set("authToken", data.data.token, {
         expires: 1, // 1일간 유지
         secure: false, // HTTPS 환경에서만 (개발 중엔 false 가능)
         sameSite: "Lax", // CSRF 방지
