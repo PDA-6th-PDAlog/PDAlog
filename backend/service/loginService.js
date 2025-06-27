@@ -1,6 +1,6 @@
-import * as loginRepository from "../repository/loginRepository.js";
+const loginRepository = require("../repository/loginRepository");
 
-export async function login(email, password) {
+exports.login = async (email, password) => {
   const user = await loginRepository.findByEmail(email);
   console.log("로그인서비스 user", user);
   if (!user) {
@@ -15,4 +15,4 @@ export async function login(email, password) {
   }
 
   return user;
-}
+};

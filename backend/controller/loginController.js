@@ -1,5 +1,5 @@
-const loginService = require("../service/loginService.js");
-const STATUS = require("../common/status.js");
+const loginService = require("../service/loginService");
+const STATUS = require("../common/status");
 
 async function login(req, res) {
   console.log("[CONTROLLER] req.body:", req.body);
