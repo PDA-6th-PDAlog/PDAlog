@@ -4,10 +4,12 @@ import { useState } from "react";
 import ProgressBarComponent from "./ProgressBarComponent";
 import { Modal, Button, Form } from "react-bootstrap";
 
-export default function StudyProgressSection() {
+export default function StudyProgressSection({studyRoomInfo, myAuthCount, weeklyRequiredCount}:any) {
+
     const [showModal, setShowModal] = useState(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [inputText, setInputText] = useState("");
+
 
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -18,6 +20,14 @@ export default function StudyProgressSection() {
     };
 
     const handleSubmit = async () => {
+
+        if (myAuthCount >= studyRoomInfo.weeklyRequiredCount) {
+            alert("이미 인증 횟수를 달성했습니다.!");
+            return;
+        } else {
+            console.log("인증 업로드 가능")
+        }
+
         if (!uploadedFile) {
             alert("이미지를 업로드해주세요.");
             return;
@@ -63,9 +73,9 @@ export default function StudyProgressSection() {
         <>
             <section className="space-y-4">
                 <div className="space-y-2">
-                    <div className="text-3xl font-medium">Title</div>
+                    <div className="text-3xl font-medium">{studyRoomInfo.title}</div>
                     <div className="flex items-center justify-between">
-                        <div className="text-lg font-semibold">스터디 진행 프로그램</div>
+                        <div className="text-lg font-semibold">{studyRoomInfo.description}</div>
                         <button
                             className="border px-2 py-1 rounded bg-white shadow"
                             onClick={() => setShowModal(true)}>
@@ -76,7 +86,7 @@ export default function StudyProgressSection() {
 
                 <div>
                     <p className="text-sm font-semibold">이번주 나의 진행 프로그램</p>
-                    <ProgressBarComponent progress={5} total={7} />
+                    <ProgressBarComponent progress={myAuthCount} total={weeklyRequiredCount} />
                 </div>
             </section>
 

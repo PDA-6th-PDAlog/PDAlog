@@ -15,6 +15,9 @@ async function getStudyById(req, res, studyRoomId) {
 
     const getStudyRoomInfo = await myStudyInfoRepository.getStudyRoomInfo(studyRoomId);
 
+    const getStudyRoomMemberProfile = await myStudyInfoRepository.getStudyRoomMemberProfile(userId, studyRoomId);
+
+
     //현재 몇주차인지
     const room = getStudyRoomInfo.rows;
     const roomStartDate = room.start_date;
@@ -55,6 +58,12 @@ async function getStudyById(req, res, studyRoomId) {
             weekly_required_count: room.weekly_required_count,
             host_id: room.host_id,
         },
+        MemberProfile: getStudyRoomMemberProfile.map(member => ({
+            user_id: member.user_id,
+            username: member.username,
+            user_profile: member.profile_image
+        }))
+        ,
         myInfo: {
             userId: Number(userId),
             authCount: getMyBoardInfo.AuthCount,
@@ -72,10 +81,9 @@ async function getStudyById(req, res, studyRoomId) {
 
 async function postStudyAuth(req, res) {
     try {
-        const { studyId, userId, weekDate, content } = req.body;
+        const { studyId, userId, weekDate, content, isFull} = req.body;
         const file = req.file;
 
-        // 파일 업로드 안 된 경우 에러 처리
         if (!file) {
             return res.status(STATUS.BAD_REQUEST.code).json({
                 message: "파일이 업로드되지 않았습니다.",
@@ -86,6 +94,13 @@ async function postStudyAuth(req, res) {
         if (!studyId || !userId || !weekDate) {
             return res.status(STATUS.BAD_REQUEST.code).json({
                 message: "필수 요청 데이터가 누락되었습니다.",
+            });
+        }
+
+        //만약 꽉 찼다면
+        if(isFull) {
+            return res.status(422).json({
+                message: "정원이 가득 찼습니다. 더 이상 참여할 수 없습니다."
             });
         }
 
