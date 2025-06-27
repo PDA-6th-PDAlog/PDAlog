@@ -40,6 +40,7 @@ app.use("/study-rooms", studyRoomRouter);
 app.use("/test", testRouter);
 app.use("/signUp", signUpRouter);
 app.use("/myStudyInfo", myStudyInfoRouter);
+
 app.use("/login", loginRouter);
 app.use("/fine-ranking", fineRankingRouter);
 
