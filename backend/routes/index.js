@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
+const mainController = require("../controller/mainController");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
+// 루트 주소로 들어왔을 때 DB 데이터 보내기
+router.get("/", mainController.getAllStudies);
 
 module.exports = router;
