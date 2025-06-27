@@ -1,18 +1,25 @@
+//StudySection.tsx
 "use client";
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
 interface Study {
   id: number;
   title: string;
-  imageUrl?: string;
+  description: string;
+  thumbnail_url?: string | null; // 백엔드에서 null일 수도 있음
+  start_date: string; // ISO 형식의 날짜 문자열
+  end_date: string;
+  penalty_amount: number;
+  weekly_required_count: number;
 }
 
 interface StudySectionProps {
   title: string;
   list: Study[];
   fontSize?: string;
-  createBoxLabel?: string;
+  link?: string;
   createBoxLink?: string;
 }
 
@@ -20,38 +27,12 @@ export default function StudySection({
   title,
   list,
   fontSize = "1.25rem",
-  createBoxLabel = "스터디 생성하기",
-  createBoxLink = "/createStudy",
+  link,
+  createBoxLink,
 }: StudySectionProps) {
-  const [studies, setStudies] = useState<Study[]>([]);
-  useEffect(() => {
-    // list prop이 없거나 비어있을 때만 fetch
-    if (list && list.length > 0) {
-      setStudies(list);
-      return;
-    }
-    const fetchStudies = async () => {
-      try {
-        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
-        const res = await fetch(`${baseUrl}/api/studies`);
-        if (!res.ok) throw new Error("Failed to fetch studies");
-        const data = await res.json();
-        // thumbnail_url을 imageUrl로 매핑
-        const mapped = data.map((item: any) => ({
-          id: item.id,
-          title: item.title,
-          imageUrl: item.thumbnail_url || undefined,
-        }));
-        setStudies(mapped);
-      } catch (err) {
-        setStudies([]);
-      }
-    };
-
-    fetchStudies();
-  }, [list]);
   const router = useRouter();
-
+  // // 컴포넌트 렌더링
+  // // 전체 스터디 목록을 렌더링
   return (
     <div
       style={{
@@ -65,8 +46,14 @@ export default function StudySection({
         {title}
       </h2>
 
-      <div style={{ display: "flex", gap: "1rem", overflowX: "auto" }}>
-        {studies.map((study) => (
+      <div
+        style={{ display: "flex", gap: "1rem", overflowX: "auto" }}
+        onClick={() => {
+          if (link) {
+            router.push(link);
+          }
+        }}>
+        {list.map((study) => (
           <div
             key={study.id}
             style={{
@@ -77,9 +64,9 @@ export default function StudySection({
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               flex: "0 0 auto",
             }}>
-            {study.imageUrl ? (
+            {study.thumbnail_url ? (
               <img
-                src={study.imageUrl}
+                src={study.thumbnail_url}
                 alt={study.title || "스터디"}
                 style={{
                   width: "100%",
@@ -89,25 +76,29 @@ export default function StudySection({
                 }}
               />
             ) : (
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#aaa",
-                  fontSize: "12px",
-                }}>
-                {study.title || "No Title"}
-              </div>
+              <>
+                <img
+                  src={"/assets/None_Thumbnail.jpeg"}
+                  alt={study.title || "스터디"}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "8px",
+                  }}
+                />
+              </>
             )}
           </div>
         ))}
 
         {/* 생성 박스 - props로 분리 */}
         <div
-          onClick={() => router.push(createBoxLink)}
+          onClick={() => {
+            if (createBoxLink) {
+              router.push(createBoxLink);
+            }
+          }}
           style={{
             width: "20vh",
             height: "20vh",
@@ -130,14 +121,13 @@ export default function StudySection({
             e.currentTarget.style.borderColor = "#ccc";
             e.currentTarget.style.backgroundColor = "white";
           }}>
+          스터디생성하기
           <div
             style={{
               fontSize: "1rem",
               color: "black",
               fontWeight: "bold",
-            }}>
-            {createBoxLabel}
-          </div>
+            }}></div>
         </div>
       </div>
     </div>

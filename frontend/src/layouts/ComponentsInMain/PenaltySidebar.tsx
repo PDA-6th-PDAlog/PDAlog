@@ -1,25 +1,18 @@
 // components/PenaltySidebar.tsx
+import React from "react";
 
 type User = {
-  id: number;
+  id: string; // 이메일을 ID로 사용
   name: string;
-  amount?: number; // 벌금 금액 없을 수도 있음
-  profileImage?: string; // optional
+  amount?: number; // 벌금 금액이 없을 수도 있음
+  profileImage?: string; // 프로필 이미지 URL, 없을 수도 있음
 };
 
-export const userList = [
-  { id: 1, name: "김혜윤", amount: 3000 },
-  { id: 2, name: "전은서", amount: 2000 },
-  { id: 3, name: "조정현" }, // 금액 없음
-  { id: 4, name: "소유진" },
-];
-
 interface PenaltySidebarProps {
-  title: string;
   users: User[];
 }
 
-export default function PenaltySidebar({ title, users }: PenaltySidebarProps) {
+const PenaltySidebar = ({ users }: PenaltySidebarProps) => {
   return (
     <aside
       style={{
@@ -29,9 +22,9 @@ export default function PenaltySidebar({ title, users }: PenaltySidebarProps) {
         borderRight: "1px solid #ccc",
       }}
     >
-      <h3 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>{title}</h3>
+      <h3 style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>벌금순위</h3>
       <ul style={{ listStyle: "none", padding: 0 }}>
-        {userList.map((user) => (
+        {users.map((user) => (
           <li
             key={user.id}
             style={{
@@ -69,4 +62,6 @@ export default function PenaltySidebar({ title, users }: PenaltySidebarProps) {
       </ul>
     </aside>
   );
-}
+};
+
+export default PenaltySidebar;
