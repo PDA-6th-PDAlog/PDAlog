@@ -5,17 +5,21 @@ import StudyProgressSection from "@/layouts/StudyStatus/StudyProgressSection";
 import CalendarAndProgressList from "@/layouts/StudyStatus/CalendarAndProgress";
 import TodayVerification from "@/layouts/StudyStatus/TodayVerifyComponent";
 import {useEffect, useState} from "react";
+import {useParams} from "next/navigation";
 
 
 export default function MyStudyInfoPage() {
 
-        const [studyInfo, setStudyInfo] = useState(null);
+    // const { pageId } = useParams(); //
+
+    const [studyInfo, setStudyInfo] = useState(null);
 
         useEffect(() => {
             const fetchStudyInfo = async () => {
                 try {
                     //fetch경로
-                    const res = await fetch("http://localhost:3001/myStudyInfo/41?userId=1");
+                    const res = await fetch(`http://localhost:3001/myStudyInfo/41?userId=1`);
+                    // const res = await fetch(`http://localhost:3001/myStudyInfo/${pageId}?userId=1`);
                     if (!res.ok) {
                         throw new Error(`HTTP error! status: ${res.status}`);
                     }
@@ -56,6 +60,7 @@ export default function MyStudyInfoPage() {
                 MemberProgress={progress.members}
                 weeklyRequiredCount={progress.weeklyRequiredCount}
                 MyInfoAuthCalendar={myInfo.authDates}
+                MyRoomNumber={studyRoomInfo.id}
             />
             <TodayVerification
                 MemberProfile={MemberProfile}

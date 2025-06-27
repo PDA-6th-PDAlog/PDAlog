@@ -103,7 +103,8 @@ export default function CreateStudyPage() {
     <main className="container py-5">
       <div
         className="mx-auto p-4 border rounded-4 shadow-sm bg-light-subtle"
-        style={{ maxWidth: "700px" }}>
+        style={{ maxWidth: "700px" }}
+      >
         <h4 className="mb-4 text-center fw-semibold text-dark">
           🌱 스터디 생성
         </h4>
@@ -129,7 +130,8 @@ export default function CreateStudyPage() {
               rows={3}
               value={form.description}
               onChange={handleChange}
-              required></textarea>
+              required
+            ></textarea>
           </div>
 
           <div className="row g-3 mb-3">
@@ -171,7 +173,8 @@ export default function CreateStudyPage() {
               name="frequency"
               className="form-select w-auto rounded-3"
               value={form.frequency}
-              onChange={handleChange}>
+              onChange={handleChange}
+            >
               <option value="1">주 1회</option>
               <option value="3">주 3회</option>
               <option value="5">주 5회</option>
@@ -214,7 +217,8 @@ export default function CreateStudyPage() {
           <div className="text-end mt-4">
             <button
               type="submit"
-              className="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
+              className="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold shadow-sm"
+            >
               스터디 생성하기
             </button>
           </div>

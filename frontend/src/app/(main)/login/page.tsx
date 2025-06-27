@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Form, Button, Container } from "react-bootstrap";
+import Cookies from "js-cookie";
 
 export default function LoginPage() {
   const [form, setForm] = useState({
@@ -9,20 +10,50 @@ export default function LoginPage() {
     password: "",
   });
 
-  const handleChange = (e) => {
+  const [error, setError] = useState<string | null>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert("로그인 버튼 클릭! (백엔드 미연동)");
-    console.log(form);
+    setError(null);
+
+    try {
+      const res = await fetch("http://localhost:3001/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "로그인 실패");
+      }
+
+      const data = await res.json();
+      console.log("로그인 성공:", data);
+
+      Cookies.set("token", data.data.token, {
+        expires: 1, // 1일간 유지
+        secure: false, // HTTPS 환경에서만 (개발 중엔 false 가능)
+        sameSite: "Lax", // CSRF 방지
+      });
+
+      alert("로그인 성공!");
+      // TODO: 토큰 저장 & 페이지 이동 (ex: localStorage.setItem("token", data.token))
+    } catch (err) {
+      console.error("로그인 실패:", err);
+    }
   };
 
   const handleGoToSignup = () => {
-    // TODO: 회원가입 페이지로 이동 (라우터 연동 필요)
     alert("회원가입 페이지로 이동");
+    // TODO: 라우팅 처리
   };
 
   return (
@@ -54,6 +85,8 @@ export default function LoginPage() {
           />
         </Form.Group>
 
+        {error && <p className="text-danger">{error}</p>}
+
         <Button variant="primary" type="submit" className="w-100 mb-3">
           로그인
         </Button>
@@ -61,8 +94,7 @@ export default function LoginPage() {
         <Button
           variant="outline-secondary"
           className="w-100"
-          onClick={handleGoToSignup}
-        >
+          onClick={handleGoToSignup}>
           회원가입
         </Button>
       </Form>
