@@ -25,3 +25,7 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.custom-navbar {
+  background-color: transparent !important;
+  box-shadow: none;
+}

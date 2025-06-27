@@ -1,0 +1,105 @@
+import pool from "../config/db.js";
+import { uploadFile } from "../service/uploadS3Service.js";
+import fs from "fs";
+import path from "path";
+
+export async function postStudyAuth({
+  studyId,
+  userId,
+  weekDate,
+  content,
+  file,
+}) {
+  let conn;
+  try {
+    // 1. S3 업로드
+    const localFilePath = file.path;
+    const s3Key = Date.now() + path.extname(file.originalname);
+    const uploadResult = await uploadFile(localFilePath, s3Key);
+    const s3Url = uploadResult.Location;
+
+    // 2. DB INSERT
+    conn = await pool.getConnection();
+
+    const query = `
+            INSERT INTO WEEKLY_STUDIES (study_id, user_id, week_date, proof_image, content)
+            VALUES (?, ?, ?, ?, ?)
+        `;
+    const values = [studyId, userId, weekDate, s3Url, content];
+
+    await conn.execute(query, values);
+
+    // 3. 로컬 파일 삭제
+    fs.unlinkSync(localFilePath);
+
+    return { success: true, imageUrl: s3Url };
+  } catch (err) {
+    console.error("Repository Error:", err);
+    throw err;
+  } finally {
+    if (conn) await conn.release();
+  }
+}
+
+//userid랑 studyid랑 넣어서 STUDY_MEMBERS 테이블에 들어가서 유저가 있으면 true 없으면 false
+export async function getStudyRoomInUser(userId, studyRoomId) {
+  let conn;
+
+  try {
+    conn = await pool.getConnection();
+
+    const [rows] = await conn.query(
+      `
+        SELECT EXISTS (
+          SELECT 1
+          FROM STUDY_MEMBERS
+          WHERE user_id = ? AND study_id = ?
+        ) AS exist
+      `,
+      [userId, studyRoomId]
+    );
+
+    if (Array.isArray(rows)) {
+      if (rows.length === 0 || typeof rows[0].exist === "undefined") {
+        return false;
+      }
+      return rows[0].exist === 1;
+    }
+    if (rows && typeof rows.exist !== "undefined") {
+      return rows.exist === 1;
+    }
+
+    return false;
+  } catch (error) {
+    console.error("getStudyRoomInUser error:", error);
+    throw error;
+  } finally {
+    if (conn) await conn.release();
+  }
+}
+
+export async function getStudyRoomInfo(studyRoomId) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    console.log(studyRoomId);
+    const [rows] = await conn.query(`SELECT * FROM STUDY_ROOMS WHERE id = ?`, [
+      Number(studyRoomId),
+    ]);
+
+    const proofRows = await conn.query(
+      `SELECT * FROM WEEKLY_STUDIES WHERE study_id = ?;`,
+      [Number(studyRoomId)]
+    );
+
+    return { rows, proofRows };
+  } catch (error) {
+    console.error("❌ no find Study Room", error);
+    throw error;
+  } finally {
+    if (conn) await conn.release();
+  }
+}
+
+export async function getStudyRoomUserInfo(userId, studyRoomId) {}
