@@ -8,6 +8,7 @@ export default function CalendarAndProgressList({
                                                     MemberProgress,
                                                     weeklyRequiredCount,
                                                     MyInfoAuthCalendar,
+                                                    MyRoomNumber
                                                 }: any) {
     const router = useRouter();
 
@@ -33,7 +34,10 @@ export default function CalendarAndProgressList({
     });
 
     const goToPersonPage = (userId: number) => {
-        router.push(`/myStudyOtherPerson/${userId}`);
+
+        router.push(`/myStudyOtherPerson/${MyRoomNumber}/${userId}`, {
+
+        });
     };
 
     return (
@@ -59,7 +63,7 @@ export default function CalendarAndProgressList({
                 ))}
             </div>
 
-            {/* 달력 컴포넌트 */}
+
             <div className="w-full md:w-[300px] border rounded shadow bg-white p-4">
                 <p className="text-sm font-semibold mb-2">
                     {year}년 {month + 1}월
