@@ -6,9 +6,6 @@ async function findAll() {
     FROM STUDY_ROOMS
     ORDER BY id DESC
   `);
-  console.log("🔥 findAll rows 확인:", rows[0]);
-  console.log("🔥 typeof rows:", typeof rows); // object
-  console.log("🔥 findAll rows 확인:", rows); // ← 진짜 배열인지 확인
   return rows;
 }
 
@@ -20,7 +17,7 @@ const getMyStudyRooms = async (userId) => {
      WHERE sm.user_id = ?`,
     [userId]
   );
-  console.log("🔥 getMyStudyRooms rows 확인: repository", rows);
+  // console.log("🔥 getMyStudyRooms rows 확인: repository", rows);
   return rows;
 };
 
