@@ -4,6 +4,7 @@ interface WeekHeaderProps {
     currentWeek: number;
     weeklyRequiredCount: number;
     myAuthCount: number;
+    TotalWeek: number;
 }
 
 export default function WeekHeader({ currentWeek, weeklyRequiredCount, myAuthCount, TotalWeek}: WeekHeaderProps) {

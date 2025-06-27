@@ -25,14 +25,31 @@ export default function StudySection({
 }: StudySectionProps) {
   const [studies, setStudies] = useState<Study[]>([]);
   useEffect(() => {
+    // list prop이 없거나 비어있을 때만 fetch
+    if (list && list.length > 0) {
+      setStudies(list);
+      return;
+    }
     const fetchStudies = async () => {
-      const res = await fetch("http://localhost:3001/api/studies"); // 백엔드 주소
-      const data = await res.json();
-      setStudies(data);
+      try {
+        const baseUrl = process.env.NEXT_PUBLIC_API_URL || "";
+        const res = await fetch(`${baseUrl}/api/studies`);
+        if (!res.ok) throw new Error("Failed to fetch studies");
+        const data = await res.json();
+        // thumbnail_url을 imageUrl로 매핑
+        const mapped = data.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          imageUrl: item.thumbnail_url || undefined,
+        }));
+        setStudies(mapped);
+      } catch (err) {
+        setStudies([]);
+      }
     };
 
     fetchStudies();
-  }, []);
+  }, [list]);
   const router = useRouter();
 
   return (
@@ -49,7 +66,7 @@ export default function StudySection({
       </h2>
 
       <div style={{ display: "flex", gap: "1rem", overflowX: "auto" }}>
-        {list.map((study) => (
+        {studies.map((study) => (
           <div
             key={study.id}
             style={{

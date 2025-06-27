@@ -1,32 +1,33 @@
+"use client";
+
 import StudySection from "../layouts/ComponentsInMain/StudySection";
 import PenaltySidebar from "../layouts/ComponentsInMain/PenaltySidebar";
 import { userList } from "../layouts/ComponentsInMain/PenaltySidebar";
 import PenaltyBarChart from "../layouts/ComponentsInMain/PenaltyBarChart";
 import "../assets/styles/font.css";
 import { Container } from "react-bootstrap";
-
-const myStudies = [
-  { id: 1, title: "스터디 A", imageUrl: "/assets/sh.png" },
-  { id: 2, title: "스터디 B", imageUrl: "/assets/sh.png" },
-];
-
-const thumbnail = {
-  list: [
-    { id: 3, title: "다른 스터디 1", imageUrl: "/assets/sh.png" },
-    { id: 4, title: "다른 스터디 2", imageUrl: "/assets/sh.png" },
-  ],
-};
-
-const studyPenaltyData = [
-  { study: "5월", amount: 12000 },
-  { study: "6월", amount: 8000 },
-  { study: "7월", amount: 9000 },
-  { study: "8월", amount: 20000 },
-  { study: "9월", amount: 18000 },
-  { study: "10월", amount: 6000 },
-];
+import { useEffect, useState } from "react";
 
 export default function HomePage() {
+  const [myStudies, setMyStudies] = useState([]);
+  const [thumbnail, setThumbnail] = useState({ list: [] });
+
+  useEffect(() => {
+    const fetchStudies = async () => {
+      const res = await fetch("/all-studies");
+      const data = await res.json();
+      // thumbnail_url을 imageUrl로 매핑
+      const mapped = data.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        imageUrl: item.thumbnail_url || undefined,
+      }));
+      setMyStudies(mapped.slice(0, 2)); // 예시: 앞 2개를 내 스터디
+      setThumbnail({ list: mapped.slice(2) }); // 나머지를 둘러보기
+    };
+    fetchStudies();
+  }, []);
+
   return (
     <div
       style={{
@@ -71,7 +72,9 @@ export default function HomePage() {
               createBoxLink="/createStudy"
             />
 
+            {/*
             <PenaltyBarChart data={studyPenaltyData} />
+            */}
           </Container>
         </main>
 

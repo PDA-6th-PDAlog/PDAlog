@@ -18,5 +18,12 @@ router.get("/:studyRoomId", (req, res) => {
 
 router.post("/studyAuth", upload.single('file'), myStudyInfoController.postStudyAuth);
 
+router.get("/:studyRoomId/:otherUserId", (req, res) => {
+    const { studyRoomId, otherUserId } = req.params;
+    console.log(otherUserId);
+    myStudyInfoController.getOtherUserInfo(req, res, studyRoomId, otherUserId);
+});
+
+
 
 module.exports = router;
