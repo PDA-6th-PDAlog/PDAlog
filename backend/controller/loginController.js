@@ -13,7 +13,12 @@ async function login(req, res) {
     // 토큰 없이 그냥 user 정보만 응답
     res.status(STATUS.SUCCESS.code).json({
       message: STATUS.SUCCESS.message,
-      data: user,
+      data: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        profile_image: user.profile_image,
+      },
     });
   } catch (error) {
     console.error("[CONTROLLER ERROR]", error);
