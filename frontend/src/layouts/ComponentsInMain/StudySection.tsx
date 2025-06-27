@@ -41,8 +41,7 @@ export default function StudySection({
         boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
         marginBottom: "2rem",
         padding: "1rem",
-      }}
-    >
+      }}>
       <h2 style={{ fontSize, marginBottom: "1rem", fontWeight: "bold" }}>
         {title}
       </h2>
@@ -53,8 +52,7 @@ export default function StudySection({
           if (link) {
             router.push(link);
           }
-        }}
-      >
+        }}>
         {list.map((study) => (
           <div
             key={study.id}
@@ -65,8 +63,7 @@ export default function StudySection({
               borderRadius: "8px",
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               flex: "0 0 auto",
-            }}
-          >
+            }}>
             {study.thumbnail_url ? (
               <img
                 src={study.thumbnail_url}
@@ -123,16 +120,14 @@ export default function StudySection({
           onMouseLeave={(e) => {
             e.currentTarget.style.borderColor = "#ccc";
             e.currentTarget.style.backgroundColor = "white";
-          }}
-        >
+          }}>
           스터디생성하기
           <div
             style={{
               fontSize: "1rem",
               color: "black",
               fontWeight: "bold",
-            }}
-          ></div>
+            }}></div>
         </div>
       </div>
     </div>

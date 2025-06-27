@@ -1,5 +1,23 @@
 
 
+// async function getStudyRoomTeamPeopleList(proofRows, currentWeek) {
+//     const result = {};
+//
+//     proofRows.forEach((row) => {
+//         if (row.week_number === currentWeek) {
+//             const userId = row.user_id;
+//             if (!result[userId]) {
+//                 result[userId] = [];
+//             }
+//             result[userId].push(row.proof_image);
+//         }
+//     });
+//
+//     return result;
+// }
+
+
+
 async function getStudyRoomTeamInfo(proofRows, currentWeek) {
     // 1. 현재 주차 데이터 필터링
     const currentWeekProofs = proofRows.filter(
@@ -60,6 +78,7 @@ async function getMyBoardInfo(userId, proofRows) {
     const AuthCount = myProofs.length;
     const authDates = [...new Set(myProofs.map(row => row.week_date))];
 
+
     return { AuthCount, authDates };
 }
 
@@ -79,4 +98,4 @@ async function goToCalculateWeek(roomStartDate, roomEndDate) {
 
     return { currentWeek, totalWeeks };
 }
-module.exports = { goToCalculateWeek, getMyBoardInfo, getMyWeekAuthCount, getStudyRoomTeamInfo};
+module.exports = { goToCalculateWeek, getMyBoardInfo, getMyWeekAuthCount, getStudyRoomTeamInfo, /**getStudyRoomTeamPeopleList**/};
