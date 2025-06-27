@@ -31,8 +31,11 @@ export default function LoginPage() {
       });
 
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.message || "로그인 실패");
+        // const errorData = await res.json();
+        // throw new Error(errorData.message || "로그인 실패");
+        setError("아이디 또는 비밀번호가 일치하지 않습니다.");
+        // throw new Error(errorData.message || "로그인 실패");
+        return;
       }
 
       const data = await res.json();
@@ -48,6 +51,7 @@ export default function LoginPage() {
       // TODO: 토큰 저장 & 페이지 이동 (ex: localStorage.setItem("token", data.token))
     } catch (err) {
       console.error("로그인 실패:", err);
+      setError("서버 오류입니다. 잠시 후 다시 시도해주세요.");
     }
   };
 

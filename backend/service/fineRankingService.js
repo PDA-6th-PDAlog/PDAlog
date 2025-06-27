@@ -14,18 +14,18 @@ export async function calculateFineRanking() {
 
     // user들에 대한 참여 스터디들 가져오기
     for (const user of users) {
-      console.log("현재 유저 id");
-      console.log(user.id);
+      // console.log("현재 유저 id");
+      // console.log(user.id);
 
       const studies = await pool.execute(
         `SELECT study_id FROM STUDY_MEMBERS WHERE user_id = ?`,
         [user.id]
       );
-      console.log("참여한 스터디들 ");
+      // console.log("참여한 스터디들 ");
       let total_fine = 0;
 
       for (const study of studies) {
-        console.log("스터디: ", study.study_id);
+        // console.log("스터디: ", study.study_id);
 
         const study_info = await pool.execute(
           `SELECT penalty_amount, start_date, end_date, weekly_required_count  FROM STUDY_ROOMS WHERE id = ?`,
@@ -39,7 +39,7 @@ export async function calculateFineRanking() {
         const startDate = dayjs(study_info[0].start_date);
 
         const weeksPassed = Math.floor(lastDate.diff(startDate, "day") / 7);
-        console.log("🗓️ 주 수:", weeksPassed);
+        // console.log("🗓️ 주 수:", weeksPassed);
 
         // 인증한 주차 수 계산 (유저 - 스터디)
         const countPassWeek = await pool.execute(
@@ -47,12 +47,12 @@ export async function calculateFineRanking() {
           [study.study_id, user.id]
         );
         const certifiedWeeks = Number(countPassWeek[0].count);
-        console.log("인증완료 주차 수 :", certifiedWeeks);
+        // console.log("인증완료 주차 수 :", certifiedWeeks);
 
         total_fine +=
           (weeksPassed - certifiedWeeks) * study_info[0].penalty_amount;
       }
-      console.log("유저 별 총 벌금 :", total_fine);
+      // console.log("유저 별 총 벌금 :", total_fine);
 
       result.push({
         username: user.username,
