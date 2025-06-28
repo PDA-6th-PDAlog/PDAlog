@@ -88,6 +88,7 @@ export default function SignupPage() {
 
       if (res.ok) {
         alert("회원가입 성공!");
+        window.location.href = "/login";
         console.log(data);
       } else {
         alert("회원가입 실패: " + data.message);
@@ -198,9 +199,11 @@ export default function SignupPage() {
         </Form.Group>
 
         {/* 제출 버튼 */}
+
         <Button variant="primary" type="submit" className="w-100">
           회원가입
         </Button>
+        <div className="h-20"></div>
       </Form>
     </Container>
   );
