@@ -41,7 +41,7 @@ export default function StudySection({
       style={{
         height: "30vh",
         width: "100%",
-        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
+        // boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
         marginBottom: "2rem",
         padding: "1rem",
       }}
@@ -60,11 +60,11 @@ export default function StudySection({
               }
             }}
             style={{
-              width: "20vh",
-              height: "20vh",
-              backgroundColor: "white",
+              width: "25vh",
+              height: "25vh",
+              backgroundColor: "#f9f9f9",
               borderRadius: "8px",
-              boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
+              // boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               flex: "0 0 auto",
               cursor: link ? "pointer" : "default",
               display: "flex",

@@ -60,6 +60,7 @@ async function getMyBoardInfo(userId, proofRows) {
     const AuthCount = myProofs.length;
     const authDates = [...new Set(myProofs.map(row => row.week_date))];
 
+
     return { AuthCount, authDates };
 }
 
@@ -79,4 +80,4 @@ async function goToCalculateWeek(roomStartDate, roomEndDate) {
 
     return { currentWeek, totalWeeks };
 }
-module.exports = { goToCalculateWeek, getMyBoardInfo, getMyWeekAuthCount, getStudyRoomTeamInfo};
+module.exports = { goToCalculateWeek, getMyBoardInfo, getMyWeekAuthCount, getStudyRoomTeamInfo, /**getStudyRoomTeamPeopleList**/};

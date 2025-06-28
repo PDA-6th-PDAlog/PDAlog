@@ -18,7 +18,7 @@ const PenaltySidebar = ({ users }: PenaltySidebarProps) => {
       style={{
         width: "40vh",
         height: "100vh",
-        backgroundColor: "#f8f8f8",
+        // backgroundColor: "#f8f8f8",
         padding: "1rem",
         borderRight: "1px solid #ccc",
       }}

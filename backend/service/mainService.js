@@ -7,7 +7,7 @@ const mainRepository = require("../repository/mainRepository.js");
  */
 async function getAllStudies() {
   const result = await mainRepository.findAll();
-  console.log("🔥 mainService getAllStudies result:", result);
+  // console.log("🔥 mainService getAllStudies result:", result);
   return result;
 }
 
@@ -17,7 +17,7 @@ async function getAllStudies() {
  */
 async function getMyStudyRooms(userId) {
   const rows = await mainRepository.getMyStudyRooms(userId);
-  console.log("🔥 getMyStudyRooms result:", rows);
+
   return rows;
 }
 

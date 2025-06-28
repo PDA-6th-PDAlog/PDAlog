@@ -15,6 +15,8 @@ var studyRoomRouter = require("./routes/studyRoomRoutes");
 var signUpRouter = require("./routes/signUp");
 var loginRouter = require("./routes/login");
 var fineRankingRouter = require("./routes/fineRanking");
+var profileRouter = require("./routes/profile");
+const session = require("express-session")
 
 const cors = require("cors");
 
@@ -24,7 +26,24 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(cors());
+
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true
+}));
+
+app.use(
+    session({
+      secret: process.env.SESSION_SECRET || "<my-secret>",
+      resave: true,
+      saveUninitialized: true,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+      },
+    })
+);
+
 app.use(express.json());
 app.use(logger("dev"));
 app.use(express.json());
@@ -43,6 +62,7 @@ app.use("/myStudyInfo", myStudyInfoRouter);
 
 app.use("/login", loginRouter);
 app.use("/fine-ranking", fineRankingRouter);
+app.use("/profile", profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

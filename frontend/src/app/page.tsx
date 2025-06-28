@@ -8,6 +8,13 @@ import { Container } from "react-bootstrap";
 import { useEffect, useState } from "react";
 import { useUser, UserProvider } from "@/layouts/common/UserContext";
 
+interface User {
+  id: number;
+  email: string;
+  username: string;
+  profile_image: string;
+}
+
 type Study = {
   id: number;
   title: string;
@@ -24,18 +31,11 @@ type StudyPenalty = {
   amount: number;
 };
 
-export default function HomePage() {
-  return (
-    <UserProvider>
-      <HomePageContent />
-    </UserProvider>
-  );
-}
-
 function HomePageContent() {
+  // ✅ 훅은 컴포넌트 안에서만 써야 한다!
   const [myStudies, setMyStudies] = useState<Study[]>([]);
   const [studies, setStudies] = useState<Study[]>([]);
-  const [userPenalties, setuserPenalties] = useState<any[]>([]);
+  const [userPenalties, setUserPenalties] = useState<any[]>([]);
   const [penalties, setPenalties] = useState<StudyPenalty[]>([]);
   const { user, isLoggedIn, setUser } = useUser();
 
@@ -47,7 +47,7 @@ function HomePageContent() {
         .then((res) => res.json())
         .then((data) => {
           if (data.isLoggedIn) {
-            setUser(data.user); // ✅ 전역에 유저 저장
+            setUser(data.user);
           }
         })
         .catch(() => setUser(null));
@@ -56,9 +56,38 @@ function HomePageContent() {
 
   useEffect(() => {
     const fetchMyStudies = async () => {
-      const res = await fetch("http://localhost:3001/my-studies");
+      if (!isLoggedIn || !user) return;
+
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const res = await fetch("http://localhost:3001/my-studies", {
+        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       const json = await res.json();
-      let mapped = json.data.map((item: any) => ({
+      const mapped = json.data.map((item: any) => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        thumbnail_url: item.thumbnail_url ?? null,
+        start_date: item.start_date,
+        end_date: item.end_date,
+        penalty_amount: item.penalty_amount,
+        weekly_required_count: item.weekly_required_count,
+        user,
+      }));
+
+      setMyStudies(mapped);
+    };
+
+    const fetchStudies = async () => {
+      const res = await fetch("http://localhost:3001/");
+      const json = await res.json();
+      const mapped = json.data.map((item: any) => ({
         id: item.id,
         title: item.title,
         description: item.description,
@@ -68,13 +97,7 @@ function HomePageContent() {
         penalty_amount: item.penalty_amount,
         weekly_required_count: item.weekly_required_count,
       }));
-      if (isLoggedIn && user) {
-        mapped = mapped.map((study: any) => ({
-          ...study,
-          user, // 로그인된 유저 정보 추가
-        }));
-      }
-      setMyStudies(mapped);
+      setStudies(mapped);
     };
 
     const fetchPenalties = async () => {
@@ -96,29 +119,13 @@ function HomePageContent() {
           amount: item.totalPenalty,
           profileImage: item.profileImage ?? null,
         }));
-        setuserPenalties(mapped);
+        setUserPenalties(mapped);
       } catch (error) {
         console.error("fetchPenalties 함수 실행 중 오류 발생:", error);
       }
     };
 
-    const fetchStudies = async () => {
-      const res = await fetch("http://localhost:3001/");
-      const json = await res.json();
-      const mapped = json.data.map((item: any) => ({
-        id: item.id,
-        title: item.title,
-        description: item.description,
-        thumbnail_url: item.thumbnail_url ?? null,
-        start_date: item.start_date,
-        end_date: item.end_date,
-        penalty_amount: item.penalty_amount,
-        weekly_required_count: item.weekly_required_count,
-      }));
-      setStudies(mapped);
-    };
-
-    const fetchstudyPenalties = async () => {
+    const fetchStudyPenalties = async () => {
       const res = await fetch("http://localhost:3001/weekly-fine-ranking");
       const json = await res.json();
       const mapped = json.data.map((item: any) => ({
@@ -127,11 +134,13 @@ function HomePageContent() {
       }));
       setPenalties(mapped);
     };
-    fetchstudyPenalties();
+
+    // 호출
     fetchMyStudies();
     fetchStudies();
     fetchPenalties();
-  }, []);
+    fetchStudyPenalties();
+  }, [isLoggedIn, user]);
 
   return (
     <div
@@ -180,12 +189,20 @@ function HomePageContent() {
               fontSize="1.5rem"
               createBoxLink="/createStudy"
             />
-            <PenaltyBarChart data={penalties} />
+            <PenaltyBarChart />
           </Container>
         </main>
         <PenaltySidebar users={userPenalties} />
       </div>
       <footer></footer>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <UserProvider>
+      <HomePageContent />
+    </UserProvider>
   );
 }
