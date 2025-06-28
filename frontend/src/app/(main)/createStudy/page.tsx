@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@/layouts/common/UserContext";
 
 export default function CreateStudyPage() {
   const router = useRouter();
+  const { user, isLoggedIn } = useUser();
 
   const [form, setForm] = useState({
     title: "",
@@ -37,6 +39,11 @@ export default function CreateStudyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isLoggedIn || !user) {
+      alert("⚠️ 로그인 후 이용해 주세요!");
+      return;
+    }
 
     if (Number(form.penalty) < 500 || Number(form.penalty) > 5000) {
       alert("⚠️ 벌금은 최소 500원, 최대 5000원까지만 설정할 수 있어요!");
@@ -74,7 +81,7 @@ export default function CreateStudyPage() {
         start_date: form.startDate,
         end_date: form.endDate,
         penalty_amount: Number(form.penalty),
-        host_id: 1,
+        host_id: user.id,
         weekly_required_count: Number(form.frequency),
         thumbnail_url: thumbnailUrl,
       };
@@ -181,8 +188,11 @@ export default function CreateStudyPage() {
               value={form.frequency}
               onChange={handleChange}>
               <option value="1">주 1회</option>
+              <option value="2">주 2회</option>
               <option value="3">주 3회</option>
+              <option value="4">주 4회</option>
               <option value="5">주 5회</option>
+              <option value="6">주 6회</option>
               <option value="7">매일</option>
             </select>
           </div>
