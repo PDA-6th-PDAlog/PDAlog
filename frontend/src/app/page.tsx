@@ -6,7 +6,7 @@ import PenaltyBarChart from "../layouts/ComponentsInMain/PenaltyBarChart";
 import "../assets/styles/font.css";
 import { Container } from "react-bootstrap";
 import { use, useEffect, useState } from "react";
-
+import { useUser } from "@/layouts/common/UserContext";
 type Study = {
   id: number;
   title: string;
@@ -32,6 +32,7 @@ type StudyPenalty = {
 // ];
 
 export default function HomePage() {
+  const { user, isLoggedIn } = useUser();
   const [myStudies, setMyStudies] = useState<Study[]>([]);
   const [studies, setStudies] = useState<Study[]>([]);
   const [userPenalties, setuserPenalties] = useState<any[]>([]); // 사이드바 페널티 컨트롤
@@ -150,13 +151,16 @@ export default function HomePage() {
           <Container
             style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem" }}
           >
-            <StudySection
-              title="참여중인 스터디"
-              list={myStudies}
-              link="/myStudyInfo"
-              fontSize="1.5rem"
-              createBoxLink="/createStudy"
-            />
+            {/* ✅ 로그인 한 경우에만 보여주기 */}
+            {isLoggedIn && (
+              <StudySection
+                title="참여중인 스터디"
+                list={myStudies}
+                link="/myStudyInfo"
+                fontSize="1.5rem"
+                createBoxLink="/createStudy"
+              />
+            )}
             <StudySection
               title="다른 스터디 둘러보기"
               list={studies}

@@ -60,7 +60,7 @@ export default function AppNavbar() {
           </Nav.Link>
           <Nav.Link
             as={Link}
-            href="/signup"
+            href="/signUp"
             style={{
               backgroundColor: "#007bff",
               color: "white",
