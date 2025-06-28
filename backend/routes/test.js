@@ -29,7 +29,6 @@ const upload = multer({
 
 router.post("/upload", upload.single("file"), async (req, res) => {
   try {
-    console.log(req.file);
     const localFilePath = req.file.path;
     const s3Key = Date.now() + extname(req.file.originalname);
     const result = await uploadFile(localFilePath, s3Key);

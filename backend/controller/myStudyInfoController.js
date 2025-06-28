@@ -1,6 +1,7 @@
-const myStudyInfoRepository = require('../repository/myStudyInfoRepository');
-const myStudyInfoService = require('../service/myStudyInfoService');
 
+const myStudyInfoRepository = require('../repository/myStudyInfoRepository');
+
+const myStudyInfoService = require('../service/myStudyInfoService');
 const STATUS = require('../common/status');
 
 async function getStudyById(req, res, studyRoomId) {
@@ -17,8 +18,6 @@ async function getStudyById(req, res, studyRoomId) {
 
     const getStudyRoomMemberProfile = await myStudyInfoRepository.getStudyRoomMemberProfile(userId, studyRoomId);
 
-
-    //현재 몇주차인지
     const room = getStudyRoomInfo.rows;
     const roomStartDate = room.start_date;
     const roomEndDate = room.end_date;
@@ -28,25 +27,24 @@ async function getStudyById(req, res, studyRoomId) {
     console.log(`총 ${toWeek.totalWeeks}주차입니다.`);
 
     const weeklyAuthCount = room.weekly_required_count;
-    console.log("Total Auth Count:", weeklyAuthCount);
+
     // 통계 계산해서 넣어야함
 
     const getMyBoardInfo = await myStudyInfoService.getMyBoardInfo(userId, getStudyRoomInfo.proofRows);
 
     //내가 인증한 총 횟수, 내가 인증한 날짜들
-    console.log(getMyBoardInfo.AuthCount, getMyBoardInfo.authDates);
+
     //내가 인증한 주차별 횟수
     const getMyWeekAuthCount = await myStudyInfoService.getMyWeekAuthCount(userId, toWeek.currentWeek, getStudyRoomInfo.proofRows);
-    console.log(getMyWeekAuthCount);
+
 
 
     //다른 사람 조회 study원들을 다 가져와야함 ProofRows에서 모든 userId마다 각각의 개수를 가져와야함 해당하는 week_number 주차로CurrentWeek,
     //toWeek.currentWeek 현재 주차에서 전체 인원의 진척도
     const getStudyRoomTeamInfo = await myStudyInfoService.getStudyRoomTeamInfo(getStudyRoomInfo.proofRows, toWeek.currentWeek)
 
-    console.log(getStudyRoomTeamInfo);
-
-    // const getStudyRoomUserInfo = await myStudyInfoRepository.getStudyRoomUserInfo(userId, studyRoomId);
+    // const getStudyRoomTeamPeopleList = await myStudyInfoService.getStudyRoomTeamPeopleList(getStudyRoomInfo.proofRows, toWeek.currentWeek)
+    // console.log(getStudyRoomTeamPeopleList);
 
     return res.status(200).json({
         studyRoomInfo: {
@@ -78,6 +76,23 @@ async function getStudyById(req, res, studyRoomId) {
         }
     });
 }
+
+async function getOtherUserInfo(req, res, studyRoomId, otherUserId) {
+
+    const getStudyRoomInfo = await myStudyInfoRepository.getStudyRoomInfo(studyRoomId);
+    //여기서 스터디 룸 startDate 추출
+    const room = getStudyRoomInfo.rows;
+    const roomStartDate = room.start_date;
+    const roomEndDate = room.end_date;
+
+    const toWeek = await myStudyInfoService.goToCalculateWeek(roomStartDate, roomEndDate);
+
+
+    const getmyTeamInfoList = await myStudyInfoRepository.getmyTeamInfoList(otherUserId, studyRoomId, toWeek.currentWeek);
+    res.status(200).json({getmyTeamInfoList})
+
+}
+
 
 async function postStudyAuth(req, res) {
     try {
@@ -124,4 +139,4 @@ async function postStudyAuth(req, res) {
     }
 }
 
-module.exports = { postStudyAuth, getStudyById };
+module.exports = { postStudyAuth, getStudyById, getOtherUserInfo };
