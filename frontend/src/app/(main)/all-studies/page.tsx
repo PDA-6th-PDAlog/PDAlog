@@ -1,5 +1,11 @@
+
+function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+}
+
+
 async function getAllStudies() {
-  const res = await fetch("http://localhost:3000/all-studies", {
+  const res = await fetch(`${getApiBaseUrl()}/all-studies`, {
     cache: "no-store",
   });
 

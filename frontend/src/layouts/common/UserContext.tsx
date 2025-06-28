@@ -20,9 +20,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const isLoggedIn = !!user;
 
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
+
     // 로그인 상태 확인 (앱 최초 실행 시)
     useEffect(() => {
-        fetch("http://localhost:3001/login/protected", {
+        fetch(`${getApiBaseUrl()}/login/protected`, {
             credentials: "include",
         })
             .then((res) => res.json())

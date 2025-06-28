@@ -15,13 +15,18 @@ export default function MyStudyInfoPage() {
 
     const [studyInfo, setStudyInfo] = useState<any>(null);
 
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
+
+
     useEffect(() => {
         const fetchStudyInfo = async () => {
             try {
                 const pageId = params.studyId; // 안전하게 접근
                 if (!pageId || !user?.id) return;
 
-                const res = await fetch(`http://localhost:3001/myStudyInfo/${pageId}?userId=${user.id}`);
+                const res = await fetch(`${getApiBaseUrl()}/myStudyInfo/${pageId}?userId=${user.id}`);
 
                 if (!res.ok) {
                     const errorData = await res.json().catch(() => null);

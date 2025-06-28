@@ -15,10 +15,14 @@ export default function AppNavbar() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
+
     // 로그인 상태 fetch (초기화 시 1번만)
     useEffect(() => {
         if (!user) {
-            fetch("http://localhost:3001/login/protected", {
+            fetch(`${getApiBaseUrl()}/login/protected`, {
                 credentials: "include",
             })
                 .then((res) => res.json())
@@ -51,9 +55,13 @@ export default function AppNavbar() {
 
     const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
+
     const handleLogout = async () => {
         try {
-            const res = await fetch("http://localhost:3001/login/logout", {
+            const res = await fetch(`${getApiBaseUrl()}/login/logout`, {
                 method: "POST",
                 credentials: "include",
             });

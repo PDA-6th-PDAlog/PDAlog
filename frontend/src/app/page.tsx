@@ -36,9 +36,14 @@ export default function HomePage() {
   const [studies, setStudies] = useState<Study[]>([]);
   const [userPenalties, setuserPenalties] = useState<any[]>([]); // 사이드바 페널티 컨트롤
   const [penalties, setPenalties] = useState<StudyPenalty[]>([]); // 벌금 랭킹 차트
+
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
   useEffect(() => {
     const fetchMyStudies = async () => {
-      const res = await fetch("http://localhost:3001/my-studies");
+      const res = await fetch(`${getApiBaseUrl()}/my-studies`);
       const json = await res.json();
       const mapped = json.data.map((item: any) => ({
         id: item.id,
@@ -56,7 +61,7 @@ export default function HomePage() {
     const fetchPenalties = async () => {
       try {
         // 안전을 위해 try-catch 블록을 사용하는 것을 권장합니다.
-        const res = await fetch("http://localhost:3001/fine-ranking");
+        const res = await fetch(`${getApiBaseUrl()}/fine-ranking`);
 
         if (!res.ok) {
           // 응답이 성공적이지 않을 경우 에러 처리
@@ -90,7 +95,7 @@ export default function HomePage() {
     };
 
     const fetchStudies = async () => {
-      const res = await fetch("http://localhost:3001/");
+      const res = await fetch(`${getApiBaseUrl()}/`);
       const json = await res.json();
       const mapped = json.data.map((item: any) => ({
         id: item.id,
@@ -106,7 +111,7 @@ export default function HomePage() {
     };
 
     const fetchstudyPenalties = async () => {
-      const res = await fetch("http://localhost:3001/weekly-fine-ranking");
+      const res = await fetch(`${getApiBaseUrl()}/weekly-fine-ranking`);
       const json = await res.json();
 
       const mapped = json.data.map((item: any) => ({

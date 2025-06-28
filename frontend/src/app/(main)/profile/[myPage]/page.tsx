@@ -8,6 +8,10 @@ export default function Page() {
   const params = useParams<{ myPage: string }>();
   const userId = params.myPage;
 
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
   const [userData, setUserData] = useState<{
     username: string;
     email: string;
@@ -27,7 +31,7 @@ export default function Page() {
     }
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/profile/${userId}`);
+        const res = await fetch(`${getApiBaseUrl()}/profile/${userId}`);
         const result = await res.json();
         setToday(result.day);
         console.log("응답 데이터:", result.day);
