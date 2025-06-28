@@ -41,6 +41,30 @@ export async function postStudyAuth({
   }
 }
 
+
+export async function getmyTeamInfoList(otherUserid, studyRoomId, currentWeek) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const query = `
+      SELECT *
+      FROM WEEKLY_STUDIES
+      WHERE study_id = ? AND user_id = ? AND week_number = ?
+    `;
+
+    const rows = await conn.query(query, [studyRoomId, otherUserid, currentWeek]);
+
+    return rows;
+  } catch (e) {
+    console.error("getMyTeamInfoList error:", e);
+    return [];
+  } finally {
+    if (conn) await conn.release();
+  }
+}
+
+
 //userid랑 studyid랑 넣어서 STUDY_MEMBERS 테이블에 들어가서 유저가 있으면 true 없으면 false
 export async function getStudyRoomInUser(userId, studyRoomId) {
   let conn;
