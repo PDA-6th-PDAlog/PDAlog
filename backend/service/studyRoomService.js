@@ -8,3 +8,16 @@ exports.createStudyRoom = async (roomData) => {
 exports.getStudyRoom = async (studyId) => {
   return await studyRoomRepository.findById(studyId);
 };
+
+exports.addUserToStudy = async (studyId, userId) => {
+  // const alreadyJoined = await studyRoomRepository.checkUserJoined(
+  //   studyId,
+  //   userId
+  // );
+  // if (alreadyJoined) {
+  //   throw new Error("이미 참가 중인 스터디입니다.");
+  // }
+
+  await studyRoomRepository.insertUserToStudy(studyId, userId);
+  console.log(`[SERVICE] user_id ${userId}가 study_id ${studyId}에 참가 완료`);
+};

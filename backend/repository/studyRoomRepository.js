@@ -63,16 +63,31 @@ export async function findById(studyId) {
 
   // 참여 멤버 조회
   const members = await pool.execute(
-    `SELECT u.username AS nickname, u.profile_image
+    `SELECT u.id, u.username AS nickname, u.profile_image
      FROM STUDY_MEMBERS sm
      JOIN USERS u ON sm.user_id = u.id
      WHERE sm.study_id = ?`,
     [studyId]
   );
-  console.log(members);
 
   return {
     ...study,
     members,
   };
+}
+
+export async function insertUserToStudy(studyId, userId) {
+  console.log("여까지 옴");
+  try {
+    await pool.execute(
+      `INSERT INTO STUDY_MEMBERS (study_id, user_id) VALUES (?, ?)`,
+      [studyId, userId]
+    );
+    console.log(
+      `[REPOSITORY] user_id ${userId}가 study_id ${studyId}에 참가 완료`
+    );
+  } catch (err) {
+    console.error("[REPOSITORY ERROR - insertUserToStudy]", err);
+    throw err;
+  }
 }

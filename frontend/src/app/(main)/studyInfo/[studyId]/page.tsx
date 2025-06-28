@@ -3,16 +3,52 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useUser } from "@/layouts/common/UserContext";
 
 export default function StudyRoomDetailPage() {
   const { studyId } = useParams();
   const [study, setStudy] = useState<any>(null);
+  const { user, isLoggedIn } = useUser();
+  const [isJoined, setIsJoined] = useState(false);
 
   const getTotalDays = (start: string, end: string) => {
     const startDate = new Date(start);
     const endDate = new Date(end);
     const diff = endDate.getTime() - startDate.getTime();
     return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+  };
+
+  const handleJoin = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3001/study-rooms/${study.id}/join`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        alert("🎉 스터디에 참가했습니다!");
+
+        const refreshed = await fetch(
+          `http://localhost:3001/study-rooms/${study.id}`
+        );
+        const newData = await refreshed.json();
+        setStudy(newData);
+        setIsJoined(true);
+      } else {
+        alert(`⚠️ 참가 실패: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("스터디 참가 오류:", err);
+      alert("😢 참가 중 오류가 발생했습니다.");
+    }
   };
 
   useEffect(() => {
@@ -28,7 +64,17 @@ export default function StudyRoomDetailPage() {
     };
 
     fetchStudy();
-  }, [studyId]);
+  }, [studyId, user]);
+
+  useEffect(() => {
+    if (study && study.members && user?.id) {
+      study.members.forEach((member: any) => {
+        if (member.id === user.id) {
+          setIsJoined(true);
+        }
+      });
+    }
+  }, [study, user]);
 
   if (!study) {
     return (
@@ -100,9 +146,17 @@ export default function StudyRoomDetailPage() {
 
         {/* 참여 버튼 */}
         <div className="flex justify-center">
-          <button className="border border-gray-300 text-gray-700 text-sm px-4 py-1.5 rounded-md hover:bg-gray-100 transition">
-            스터디 참여하기
-          </button>
+          {isLoggedIn && isJoined ? (
+            <button className="border border-red-300 text-red-600 text-sm px-4 py-1.5 rounded-md hover:bg-red-50 transition">
+              스터디 나가기
+            </button>
+          ) : (
+            <button
+              onClick={handleJoin}
+              className="border border-gray-300 text-gray-700 text-sm px-4 py-1.5 rounded-md hover:bg-gray-100 transition">
+              스터디 참여하기
+            </button>
+          )}
         </div>
       </div>
     </main>

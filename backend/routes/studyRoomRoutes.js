@@ -22,4 +22,15 @@ router.get(
   studyRoomController.getStudyRoom
 );
 
+// 인증 필요
+router.post(
+  "/:id/join",
+  (req, res, next) => {
+    console.log(`[ROUTER] POST /study-rooms/${req.params.id}/join 요청 들어옴`);
+    next();
+  },
+  authenticate,
+  studyRoomController.joinStudyRoom
+);
+
 module.exports = router;
