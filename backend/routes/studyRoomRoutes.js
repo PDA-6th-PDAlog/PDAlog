@@ -22,7 +22,6 @@ router.get(
   studyRoomController.getStudyRoom
 );
 
-// 인증 필요
 router.post(
   "/:id/join",
   (req, res, next) => {
@@ -31,6 +30,18 @@ router.post(
   },
   authenticate,
   studyRoomController.joinStudyRoom
+);
+
+router.delete(
+  "/:id/leave",
+  (req, res, next) => {
+    console.log(
+      `[ROUTER] DELETE /study-rooms/${req.params.id}/leave 요청 들어옴`
+    );
+    next();
+  },
+  authenticate,
+  studyRoomController.leaveStudyRoom
 );
 
 module.exports = router;
