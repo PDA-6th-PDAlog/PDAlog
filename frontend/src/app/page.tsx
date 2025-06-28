@@ -169,7 +169,8 @@ export default function HomePage() {
               fontSize="1.5rem"
               createBoxLink="/createStudy"
             />
-            <PenaltyBarChart data={penalties} />
+            <PenaltyBarChart/>
+            {/*<PenaltyBarChart data={penalties} />*/}
 
           </Container>
         </main>

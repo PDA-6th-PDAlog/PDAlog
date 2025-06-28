@@ -55,10 +55,6 @@ export default function AppNavbar() {
 
     const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
-    function getApiBaseUrl(): string {
-        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
-    }
-
     const handleLogout = async () => {
         try {
             const res = await fetch(`${getApiBaseUrl()}/login/logout`, {
