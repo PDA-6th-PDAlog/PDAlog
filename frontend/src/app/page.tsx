@@ -23,19 +23,19 @@ type StudyPenalty = {
   amount: number;
 };
 
-const dummyPenaltyData: StudyPenalty[] = [
-  { study: "알고리즘 스터디", amount: 15000 },
-  { study: "CS 전공책 읽기", amount: 8000 },
-  { study: "면접 대비 모의질문", amount: 23000 },
-  { study: "영어 회화", amount: 5000 },
-  { study: "프로젝트 협업", amount: 12000 },
-];
+// const dummyPenaltyData: StudyPenalty[] = [
+//   { study: "알고리즘 스터디", amount: 15000 },
+//   { study: "CS 전공책 읽기", amount: 8000 },
+//   { study: "면접 대비 모의질문", amount: 23000 },
+//   { study: "영어 회화", amount: 5000 },
+//   { study: "프로젝트 협업", amount: 12000 },
+// ];
 
 export default function HomePage() {
   const [myStudies, setMyStudies] = useState<Study[]>([]);
   const [studies, setStudies] = useState<Study[]>([]);
   const [userPenalties, setuserPenalties] = useState<any[]>([]); // 사이드바 페널티 컨트롤
-
+  const [penalties, setPenalties] = useState<StudyPenalty[]>([]); // 벌금 랭킹 차트
   useEffect(() => {
     const fetchMyStudies = async () => {
       const res = await fetch("http://localhost:3001/my-studies");
@@ -105,6 +105,18 @@ export default function HomePage() {
       setStudies(mapped);
     };
 
+    const fetchstudyPenalties = async () => {
+      const res = await fetch("http://localhost:3001/weekly-fine-ranking");
+      const json = await res.json();
+
+      const mapped = json.data.map((item: any) => ({
+        study: item.studyTitle,
+        amount: item.totalFine,
+      }));
+
+      setPenalties(mapped);
+    };
+    fetchstudyPenalties();
     fetchMyStudies();
     fetchStudies();
     fetchPenalties();
@@ -152,7 +164,7 @@ export default function HomePage() {
               fontSize="1.5rem"
               createBoxLink="/createStudy"
             />
-            <PenaltyBarChart data={dummyPenaltyData} />
+            <PenaltyBarChart data={penalties} />
           </Container>
         </main>
 

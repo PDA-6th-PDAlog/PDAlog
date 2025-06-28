@@ -30,7 +30,7 @@ export default function PenaltyBarChart({ data }: Props) {
     <div
       style={{
         width: "100%",
-        height: "20vh",
+        height: "50vh",
         padding: "1rem",
         borderLeft: "1px solid #ccc",
         borderRight: "1px solid #ccc",

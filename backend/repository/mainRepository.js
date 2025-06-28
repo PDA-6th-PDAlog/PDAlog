@@ -1,7 +1,7 @@
 const pool = require("../config/db.js");
 
 async function findAll() {
-  const [rows] = await pool.execute(`
+  const rows = await pool.execute(`
     SELECT id, title, description, thumbnail_url, start_date, end_date, penalty_amount, weekly_required_count
     FROM STUDY_ROOMS
     ORDER BY id DESC
@@ -10,7 +10,7 @@ async function findAll() {
 }
 
 const getMyStudyRooms = async (userId) => {
-  const [rows] = await pool.query(
+  const rows = await pool.query(
     `SELECT sr.* 
      FROM STUDY_ROOMS sr 
      JOIN STUDY_MEMBERS sm ON sr.id = sm.study_id 
@@ -74,9 +74,11 @@ const getWeeklyFines = async (startDate, endDate) => {
     }));
 
     console.log("✅ Repository 정상 rows:", normalizedRows);
+    console.log(typeof normalizedRows);
     return normalizedRows;
   } catch (err) {
     console.error("[ERROR] Repository 쿼리 에러:", err);
+    console.error("[ERROR] stack:", err.stack);
     throw err;
   }
 };
