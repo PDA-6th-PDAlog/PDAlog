@@ -92,6 +92,7 @@ export default function CreateStudyPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
+        credentials: "include",
       });
 
       if (!studyRes.ok) throw new Error("스터디 생성 실패");

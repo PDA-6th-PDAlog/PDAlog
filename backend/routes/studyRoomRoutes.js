@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const studyRoomController = require("../controller/studyRoomController");
+const authenticate = require("../common/middlewareAuth");
 
 router.post(
   "/",
@@ -8,6 +9,7 @@ router.post(
     console.log("[ROUTER] POST /study-rooms 요청 들어옴");
     next();
   },
+  authenticate,
   studyRoomController.createStudyRoom
 );
 
