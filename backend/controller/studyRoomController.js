@@ -4,6 +4,32 @@ const STATUS = require("../common/status");
 async function createStudyRoom(req, res) {
   console.log("[CONTROLLER] req.body:", req.body);
   try {
+    // req.user에서 로그인된 사용자 id 가져오기
+    const userId = req.user.id;
+
+    // req.body에서 필요한 값만 꺼내오기
+    const {
+      title,
+      description,
+      start_date,
+      end_date,
+      penalty_amount,
+      weekly_required_count,
+      thumbnail_url,
+    } = req.body;
+
+    // host_id를 강제로 userId로 덮어쓰기 보안상
+    const roomData = {
+      title,
+      description,
+      start_date,
+      end_date,
+      penalty_amount,
+      weekly_required_count,
+      thumbnail_url,
+      host_id: userId,
+    };
+
     const newRoom = await studyRoomService.createStudyRoom(req.body);
     console.log("[CONTROLLER] 새 스터디룸 생성 완료:", newRoom);
 
