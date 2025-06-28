@@ -2,10 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import dayjs from "dayjs";
 
 export default function Page() {
-  const params = useParams<{ id: string }>();
-  const userId = params.id;
+  const params = useParams<{ myPage: string }>();
+  const userId = params.myPage;
 
   const [userData, setUserData] = useState<{
     username: string;
@@ -13,19 +14,38 @@ export default function Page() {
     profile_image: string;
   } | null>(null);
 
+  const [studyData, setStudyData] = useState<any[]>([]);
+  const [today, setToday] = useState<string>("");
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!userId) return;
-
+    console.log("userId", userId);
+    if (!userId) {
+      console.log("안뜸");
+      return;
+    }
     const fetchData = async () => {
       try {
         const res = await fetch(`http://localhost:3001/profile/${userId}`);
         const result = await res.json();
-        console.log("응답 데이터:", result);
+        setToday(result.day);
+        console.log("응답 데이터:", result.day);
 
         if (result.success && result.data.length > 0) {
           setUserData(result.data[0]);
+        }
+
+        if (result.success && result.data2?.length > 0) {
+          setStudyData(
+            result.data2.map((item) => ({
+              name: item.name,
+              dates: item.dates,
+              progress: { completed: 0, total: item.dates.length },
+            }))
+          );
+          const studyCount = result.data2.length;
+          console.log("참여중인 스터디 개수:", studyCount);
         }
       } catch (e) {
         console.error(e);
@@ -37,56 +57,18 @@ export default function Page() {
     fetchData();
   }, [userId]);
 
-  useEffect(() => {
-    if (!userId) return;
+  const dateHeaders =
+    today !== ""
+      ? Array.from({ length: 6 }, (_, i) =>
+          dayjs(today)
+            .subtract(4 - i, "day")
+            .format("M/D")
+        )
+      : [];
 
-    const fetchData = async () => {
-      try {
-        const res = await fetch(`http://localhost:3001/profile/${userId}`);
-        const result = await res.json();
-        console.log("응답 데이터:", result);
-
-        if (result.success && result.data.length > 0) {
-          setUserData(result.data[0]);
-        }
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [userId]);
-
-  const studyData = [
-    {
-      name: "알고리즘 스터디",
-      dates: ["O", "O", "X", "O", "O"],
-      progress: { completed: 4, total: 5 },
-    },
-    {
-      name: "React 심화 스터디",
-      dates: ["O", "X", "O", "O", "X"],
-      progress: { completed: 3, total: 5 },
-    },
-    {
-      name: "디자인 패턴 스터디",
-      dates: ["X", "O", "O", "O", "O"],
-      progress: { completed: 4, total: 5 },
-    },
-    {
-      name: "영어 회화 스터디",
-      dates: ["O", "O", "O", "X", "O"],
-      progress: { completed: 4, total: 5 },
-    },
-  ];
-
-  const dateHeaders = ["6/3", "6/4", "6/5", "6/6", "6/7"];
-
-  const getProgressPercentage = (completed: number, total: number) => {
-    return (completed / total) * 100;
-  };
+  // const getProgressPercentage = (completed: number, total: number) => {
+  //   return (completed / total) * 100;
+  // };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -94,12 +76,24 @@ export default function Page() {
         {/* Profile Section */}
         <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-              <span className="text-white text-xl font-bold">홍</span>
-            </div>
+            {userData?.profile_image ? (
+              <img
+                src={userData.profile_image}
+                alt="Profile"
+                className="w-16 h-16 rounded-2xl object-cover shadow-lg"
+              />
+            ) : (
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+                <span className="text-white text-xl font-bold">
+                  {userData?.username?.charAt(0) || "-"}
+                </span>
+              </div>
+            )}
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-gray-900 mb-1">홍길동</h1>
-              <p className="text-gray-500 text-sm">hong.gildong@example.com</p>
+              <h1 className="text-2xl font-bold text-black-900 mb-1">
+                {userData?.username}
+              </h1>
+              <p className="text-gray-500 text-sm">{userData?.email}</p>
             </div>
           </div>
         </div>
@@ -127,9 +121,10 @@ export default function Page() {
                     {date}
                   </div>
                 ))}
-                <div className="text-center text-sm font-medium text-gray-600">
+                {/* 진행률 헤더 주석처리 */}
+                {/* <div className="text-center text-sm font-medium text-gray-600">
                   진행률
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -158,7 +153,8 @@ export default function Page() {
                         </div>
                       </div>
                     ))}
-                    <div className="flex flex-col items-center gap-2">
+                    {/* 진행률 영역 주석처리 */}
+                    {/* <div className="flex flex-col items-center gap-2">
                       <div className="w-full max-w-20 bg-gray-200 rounded-full h-2">
                         <div
                           className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
@@ -173,7 +169,7 @@ export default function Page() {
                       <span className="text-xs font-medium text-gray-600">
                         {study.progress.completed}/{study.progress.total}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ))}
@@ -186,7 +182,8 @@ export default function Page() {
               <div key={index} className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-gray-900">{study.name}</h3>
-                  <div className="flex items-center gap-2">
+                  {/* 모바일 진행률 영역 주석처리 */}
+                  {/* <div className="flex items-center gap-2">
                     <div className="w-16 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-gradient-to-r from-blue-500 to-blue-600 h-2 rounded-full transition-all duration-500"
@@ -201,7 +198,7 @@ export default function Page() {
                     <span className="text-xs font-medium text-gray-600 min-w-8">
                       {study.progress.completed}/{study.progress.total}
                     </span>
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="grid grid-cols-5 gap-3">
@@ -228,13 +225,15 @@ export default function Page() {
         {/* Stats Cards */}
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
-            <div className="text-2xl font-bold text-gray-900 mb-1">4</div>
+            <div className="text-2xl font-bold text-gray-900 mb-1">
+              {studyData.length}
+            </div>
             <div className="text-sm text-gray-500">참여중인 스터디</div>
           </div>
-          <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
+          {/* <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
             <div className="text-2xl font-bold text-blue-600 mb-1">75%</div>
             <div className="text-sm text-gray-500">평균 참여율</div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
