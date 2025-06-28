@@ -58,6 +58,7 @@ export default function LoginPage() {
 
   const handleGoToSignup = () => {
     alert("회원가입 페이지로 이동");
+    window.location.href = "/signUp";
     // TODO: 라우팅 처리
   };
 
