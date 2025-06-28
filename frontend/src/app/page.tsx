@@ -165,6 +165,7 @@ export default function HomePage() {
               createBoxLink="/createStudy"
             />
             <PenaltyBarChart data={penalties} />
+
           </Container>
         </main>
 

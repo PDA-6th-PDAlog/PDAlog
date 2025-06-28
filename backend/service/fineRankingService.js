@@ -49,7 +49,6 @@ export async function calculateFineRanking() {
     const result = [];
 
     for (const user of users) {
-      console.log("현재 유저 id:", user.id);
 
       const [studies] = await pool.execute(
         `SELECT study_id FROM STUDY_MEMBERS WHERE user_id = ?`,
@@ -63,18 +62,18 @@ export async function calculateFineRanking() {
           `SELECT penalty_amount, start_date, end_date, weekly_required_count, start_weekday 
            FROM STUDY_ROOMS 
            WHERE id = ?`,
+
           [study.study_id]
         );
 
         const studyInfo = studyInfoRows[0];
-
         const today = dayjs();
         const startDate = dayjs(studyInfo.start_date);
         const endDate = dayjs(studyInfo.end_date);
-
         // 지난 주 기간 계산
         const { startDate: lastWeekStart, endDate: lastWeekEnd } =
           getLastWeekRange(studyInfo.start_weekday, today);
+
 
         console.log("지난 주 시작일:", lastWeekStart, "종료일:", lastWeekEnd);
 
@@ -86,7 +85,6 @@ export async function calculateFineRanking() {
              AND week_date BETWEEN ? AND ?`,
           [study.study_id, user.id, lastWeekStart, lastWeekEnd]
         );
-
         const lastWeekCertCount = Number(countRows[0].count);
         console.log("지난 주 인증 횟수:", lastWeekCertCount);
 
@@ -101,6 +99,7 @@ export async function calculateFineRanking() {
           `벌금계산 → 부족 ${lackCount}회 x ${studyInfo.penalty_amount} = ${penalty}`
         );
       }
+
 
       result.push({
         username: user.username,

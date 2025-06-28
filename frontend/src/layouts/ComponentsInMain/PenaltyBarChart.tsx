@@ -9,20 +9,40 @@ import {
   Tooltip,
   ResponsiveContainer,
   LabelList,
+  Cell,
 } from "recharts";
-import { Cell } from "recharts";
+import { useEffect, useState } from "react";
 
 type StudyPenalty = {
   study: string;
   amount: number;
 };
 
-interface Props {
-  data: StudyPenalty[];
-}
+export default function PenaltyBarChart() {
+  const [data, setData] = useState<StudyPenalty[]>([]);
 
-export default function PenaltyBarChart({ data }: Props) {
-  // 상위 2개 골라서 색상 지정
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await fetch("http://localhost:3001/weekly-fine-ranking");
+        const json = await res.json();
+
+        if (json.success && json.data) {
+          const mapped: StudyPenalty[] = json.data.map((item: any) => ({
+            study: item.studyTitle,
+            amount: item.totalFine,
+          }));
+
+          setData(mapped);
+        }
+      } catch (err) {
+        console.error("벌금 랭킹 불러오기 실패", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const sorted = [...data].sort((a, b) => b.amount - a.amount);
   const topStudies = sorted.slice(0, 2).map((item) => item.study);
 
@@ -43,8 +63,8 @@ export default function PenaltyBarChart({ data }: Props) {
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="study" stroke="#fff" />
-          <YAxis stroke="#fff" />
+          <XAxis dataKey="study" stroke="#000" />
+          <YAxis stroke="#000" />
           <Tooltip
             formatter={(value: number) => `${value.toLocaleString()}원`}
           />
@@ -56,7 +76,7 @@ export default function PenaltyBarChart({ data }: Props) {
             {data.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
-                fill={topStudies.includes(entry.study) ? "#0046ff" : "#ccc"} // 노랑 or 회색
+                fill={topStudies.includes(entry.study) ? "#0046ff" : "#ccc"}
               />
             ))}
             <LabelList

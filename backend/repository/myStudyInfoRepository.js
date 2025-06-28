@@ -4,13 +4,9 @@ import fs from "fs";
 import path from "path";
 
 export async function postStudyAuth({
-  studyId,
-  userId,
-  weekDate,
-  content,
-  file,
-}) {
+  studyId, userId, weekDate, content, file, currentWeek}) {
   let conn;
+
   try {
     // 1. S3 업로드
     const localFilePath = file.path;
@@ -22,10 +18,10 @@ export async function postStudyAuth({
     conn = await pool.getConnection();
 
     const query = `
-            INSERT INTO WEEKLY_STUDIES (study_id, user_id, week_date, proof_image, content)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO WEEKLY_STUDIES (study_id, user_id, week_date, week_number, proof_image, content)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
-    const values = [studyId, userId, weekDate, s3Url, content];
+    const values = [studyId, userId, weekDate, currentWeek, s3Url, content];
 
     await conn.execute(query, values);
 
@@ -40,6 +36,30 @@ export async function postStudyAuth({
     if (conn) await conn.release();
   }
 }
+
+
+export async function getmyTeamInfoList(otherUserid, studyRoomId, currentWeek) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const query = `
+      SELECT *
+      FROM WEEKLY_STUDIES
+      WHERE study_id = ? AND user_id = ? AND week_number = ?
+    `;
+
+    const rows = await conn.query(query, [studyRoomId, otherUserid, currentWeek]);
+
+    return rows;
+  } catch (e) {
+    console.error("getMyTeamInfoList error:", e);
+    return [];
+  } finally {
+    if (conn) await conn.release();
+  }
+}
+
 
 //userid랑 studyid랑 넣어서 STUDY_MEMBERS 테이블에 들어가서 유저가 있으면 true 없으면 false
 export async function getStudyRoomInUser(userId, studyRoomId) {
