@@ -20,39 +20,7 @@ async function getAllStudies(req, res) {
     });
   }
 }
-// Function to get user's study rooms
-// const getUserStudyRooms = async (req, res) => {
-//   try {
-//     const rows = await mainService.getMyStudyRooms();
-//     console.log("🔥 getMyStudyRooms rows 확인: controller", rows);
-//     return rows;
-//   } catch (error) {
-//     console.error("[ERROR] getUserStudyRooms:", error);
-//     throw error;
-//   }
-// };
-// module.exports = {
-//   getAllStudies,
-//   getUserStudyRooms,
-// };
 
-// //// mainController.js
-// const getUserStudyRooms = async (req, res) => {
-//   try {
-//     const userId = req.user.id; // JWT에서 꺼내거나, 세션 등
-//     const rows = await mainService.getMyStudyRooms(userId);
-//     console.log("🔥 getMyStudyRooms rows 확인: controller", rows);
-//     return res.status(200).json({
-//       message: "내가 가입한 스터디 조회 성공",
-//       data: rows,
-//     });
-//   } catch (error) {
-//     console.error("[ERROR] getUserStudyRooms:", error);
-//     return res.status(500).json({
-//       message: "서버 오류",
-//     });
-//   }
-// };
 const getUserStudyRooms = async (req, res) => {
   try {
     const userId = 1; // 테스트용 하드코딩
@@ -69,8 +37,28 @@ const getUserStudyRooms = async (req, res) => {
     });
   }
 };
+const { calculateWeeklyFineRanking } = require("../service/mainService.js");
+
+const getWeeklyFineRanking = async (req, res) => {
+  try {
+    const result = await calculateWeeklyFineRanking();
+
+    res.status(200).json({
+      success: true,
+      message: "주간 벌금 랭킹 조회 성공",
+      data: result,
+    });
+  } catch (err) {
+    console.error("[ERROR] getWeeklyFineRanking:", err);
+    res.status(500).json({
+      success: false,
+      message: "주간 벌금 랭킹 조회 실패",
+    });
+  }
+};
 
 module.exports = {
   getAllStudies,
+  getWeeklyFineRanking,
   getUserStudyRooms,
 };

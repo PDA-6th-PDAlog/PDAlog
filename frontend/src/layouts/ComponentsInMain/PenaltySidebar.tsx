@@ -16,7 +16,8 @@ const PenaltySidebar = ({ users }: PenaltySidebarProps) => {
   return (
     <aside
       style={{
-        width: "30vh",
+        width: "40vh",
+        height: "100vh",
         backgroundColor: "#f8f8f8",
         padding: "1rem",
         borderRight: "1px solid #ccc",
