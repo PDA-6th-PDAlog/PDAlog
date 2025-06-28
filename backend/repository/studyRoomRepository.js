@@ -75,3 +75,19 @@ export async function findById(studyId) {
     members,
   };
 }
+
+export async function insertUserToStudy(studyId, userId) {
+  console.log("여까지 옴");
+  try {
+    await pool.execute(
+      `INSERT INTO STUDY_MEMBERS (study_id, user_id) VALUES (?, ?)`,
+      [studyId, userId]
+    );
+    console.log(
+      `[REPOSITORY] user_id ${userId}가 study_id ${studyId}에 참가 완료`
+    );
+  } catch (err) {
+    console.error("[REPOSITORY ERROR - insertUserToStudy]", err);
+    throw err;
+  }
+}
