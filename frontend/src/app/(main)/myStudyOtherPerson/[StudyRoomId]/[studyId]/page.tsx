@@ -39,8 +39,8 @@ export default function myStudyOtherPersonPage() {
             <div className="flex flex-col p-4 gap-4">
                 <StudyProofSection
                     getmyTeamInfoList={getmyTeamInfoList}/>
-                <StatisticsSection/>
-                <CommentSection/>
+                {/*<StatisticsSection/>*/}
+                {/*<CommentSection/>*/}
             </div>
         </div>
     )
