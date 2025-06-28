@@ -16,6 +16,7 @@ var signUpRouter = require("./routes/signUp");
 var loginRouter = require("./routes/login");
 var fineRankingRouter = require("./routes/fineRanking");
 var profileRouter = require("./routes/profile");
+const session = require("express-session")
 
 const cors = require("cors");
 
@@ -30,6 +31,18 @@ app.use(cors({
   origin: "http://localhost:3000",
   credentials: true
 }));
+
+app.use(
+    session({
+      secret: process.env.SESSION_SECRET || "<my-secret>",
+      resave: true,
+      saveUninitialized: true,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+      },
+    })
+);
 
 app.use(express.json());
 app.use(logger("dev"));
