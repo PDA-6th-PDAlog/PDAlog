@@ -7,55 +7,48 @@ import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
 import "../../assets/styles/font.css";
 import { useEffect, useState, useRef } from "react";
+import { useUser } from "@/layouts/common/UserContext";
 
 export default function AppNavbar() {
-    const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-    const [userInfo, setUserInfo] = useState<any>(null);
+    const { user, isLoggedIn, setUser } = useUser(); // ✅ 전역 상태
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
 
+    // 로그인 상태 fetch (초기화 시 1번만)
     useEffect(() => {
-        fetch("http://localhost:3001/login/protected", {
-            credentials: "include",
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                if (data.isLoggedIn) {
-                    setIsLoggedIn(true);
-                    setUserInfo(data.user);
-                } else {
-                    setIsLoggedIn(false);
-                    setUserInfo(null);
-                }
+        if (!user) {
+            fetch("http://localhost:3001/login/protected", {
+                credentials: "include",
             })
-            .catch(() => {
-                setIsLoggedIn(false);
-                setUserInfo(null);
-            });
-    }, []);
+                .then((res) => res.json())
+                .then((data) => {
+                    if (data.isLoggedIn) {
+                        setUser(data.user); // ✅ 전역에 유저 저장
+                    }
+                })
+                .catch(() => setUser(null));
+        }
+    }, [user, setUser]);
 
+    // 드롭다운 바깥 클릭 시 닫기
     useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
+        const handleClickOutside = (event: MouseEvent) => {
             if (
                 dropdownRef.current &&
                 !dropdownRef.current.contains(event.target as Node)
             ) {
                 setDropdownOpen(false);
             }
-        }
+        };
         if (dropdownOpen) {
             document.addEventListener("mousedown", handleClickOutside);
-        } else {
-            document.removeEventListener("mousedown", handleClickOutside);
         }
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [dropdownOpen]);
 
-    const toggleDropdown = () => {
-        setDropdownOpen((prev) => !prev);
-    };
+    const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
     const handleLogout = async () => {
         try {
@@ -64,8 +57,7 @@ export default function AppNavbar() {
                 credentials: "include",
             });
             if (res.ok) {
-                setIsLoggedIn(false);
-                setUserInfo(null);
+                setUser(null); // ✅ 전역 유저 초기화
                 setDropdownOpen(false);
                 alert("로그아웃 되었습니다.");
                 window.location.href = "/";
@@ -108,18 +100,20 @@ export default function AppNavbar() {
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
 
                 <div style={{ position: "relative" }} ref={dropdownRef}>
-                    {isLoggedIn && userInfo ? (
+                    {isLoggedIn && user ? (
                         <>
-                            <div onClick={toggleDropdown}
-                                 style={{
-                                     display: "flex",
-                                     alignItems: "center",
-                                     cursor: "pointer",
-                                     userSelect: "none",
-                                     gap: "10px",
-                                 }}>
+                            <div
+                                onClick={toggleDropdown}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    cursor: "pointer",
+                                    userSelect: "none",
+                                    gap: "10px",
+                                }}
+                            >
                                 <img
-                                    src={userInfo.profile_image}
+                                    src={user.profile_image}
                                     alt="프로필 이미지"
                                     style={{
                                         width: "40px",
@@ -136,7 +130,7 @@ export default function AppNavbar() {
                                         whiteSpace: "nowrap",
                                     }}
                                 >
-                                    {userInfo.username}
+                                    {user.username}
                                 </span>
                             </div>
 
