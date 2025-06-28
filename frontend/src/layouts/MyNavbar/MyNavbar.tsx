@@ -7,6 +7,7 @@ import Navbar from "react-bootstrap/Navbar";
 import Link from "next/link";
 import "../../assets/styles/font.css";
 import { useEffect, useState, useRef } from "react";
+
 import { useUser } from "@/layouts/common/UserContext";
 
 export default function AppNavbar() {
@@ -200,4 +201,5 @@ export default function AppNavbar() {
             </Container>
         </Navbar>
     );
+
 }
