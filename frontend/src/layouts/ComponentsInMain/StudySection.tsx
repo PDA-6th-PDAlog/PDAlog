@@ -1,6 +1,7 @@
 //StudySection.tsx
 "use client";
 
+import { linkSync } from "fs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -47,17 +48,15 @@ export default function StudySection({
         {title}
       </h2>
 
-      <div
-        style={{ display: "flex", gap: "1rem", overflowX: "auto" }}
-        onClick={() => {
-          if (link) {
-            router.push(link);
-          }
-        }}
-      >
+      <div style={{ display: "flex", gap: "1rem", overflowX: "auto" }}>
         {list.map((study) => (
           <div
             key={study.id}
+            onClick={() => {
+              if (link) {
+                router.push(`${link}/${study.id}`);
+              }
+            }}
             style={{
               width: "20vh",
               height: "20vh",
@@ -65,21 +64,36 @@ export default function StudySection({
               borderRadius: "8px",
               boxShadow: "0 2px 6px rgba(0,0,0,0.1)",
               flex: "0 0 auto",
+              cursor: link ? "pointer" : "default",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              overflow: "hidden",
+              padding: 0,
             }}
           >
-            {study.thumbnail_url ? (
-              <img
-                src={study.thumbnail_url}
-                alt={study.title || "스터디"}
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "8px",
-                }}
-              />
-            ) : (
-              <>
+            <div
+              style={{
+                width: "100%",
+                height: "70%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {study.thumbnail_url ? (
+                <img
+                  src={study.thumbnail_url}
+                  alt={study.title || "스터디"}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "8px 8px 0 0",
+                  }}
+                />
+              ) : (
                 <img
                   src={"/assets/None_Thumbnail.jpeg"}
                   alt={study.title || "스터디"}
@@ -87,11 +101,29 @@ export default function StudySection({
                     width: "100%",
                     height: "100%",
                     objectFit: "cover",
-                    borderRadius: "8px",
+                    borderRadius: "8px 8px 0 0",
                   }}
                 />
-              </>
-            )}
+              )}
+            </div>
+            <div
+              style={{
+                width: "100%",
+                height: "30%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 600,
+                fontSize: "1rem",
+                textAlign: "center",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+                padding: "0 0.5rem",
+              }}
+            >
+              {study.title}
+            </div>
           </div>
         ))}
 

@@ -141,14 +141,14 @@ export default function HomePage() {
             <StudySection
               title="참여중인 스터디"
               list={myStudies}
-              link="/myStudyInfo/{myStudies.id}"
+              link="/myStudyInfo"
               fontSize="1.5rem"
               createBoxLink="/createStudy"
             />
             <StudySection
               title="다른 스터디 둘러보기"
               list={studies}
-              link="/studyInfo/{myStudies.id}"
+              link="/studyInfo"
               fontSize="1.5rem"
               createBoxLink="/createStudy"
             />

@@ -45,7 +45,7 @@ export default function AppNavbar() {
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <div>
+        <div style={{ display: "flex", gap: "10px" }}>
           <Nav.Link
             as={Link}
             href="/login"
