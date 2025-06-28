@@ -94,7 +94,9 @@ export default function StudyProgressSection({
                         </p>
                         <button
                             onClick={() => setShowModal(true)}
-                            className="mt-3 px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700"
+                            disabled={myAuthCount >= weeklyRequiredCount}
+                            className={`mt-3 px-4 py-2 rounded font-semibold text-white 
+        ${myAuthCount >= weeklyRequiredCount ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"}`}
                         >
                             📁 인증하기
                         </button>
