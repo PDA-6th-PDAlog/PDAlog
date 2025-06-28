@@ -18,6 +18,39 @@ export default function StudyRoomDetailPage() {
     return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
   };
 
+  const handleJoin = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3001/study-rooms/${study.id}/join`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        alert("🎉 스터디에 참가했습니다!");
+
+        const refreshed = await fetch(
+          `http://localhost:3001/study-rooms/${study.id}`
+        );
+        const newData = await refreshed.json();
+        setStudy(newData);
+        setIsJoined(true);
+      } else {
+        alert(`⚠️ 참가 실패: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("스터디 참가 오류:", err);
+      alert("😢 참가 중 오류가 발생했습니다.");
+    }
+  };
+
   useEffect(() => {
     const fetchStudy = async () => {
       try {
@@ -118,7 +151,9 @@ export default function StudyRoomDetailPage() {
               스터디 나가기
             </button>
           ) : (
-            <button className="border border-gray-300 text-gray-700 text-sm px-4 py-1.5 rounded-md hover:bg-gray-100 transition">
+            <button
+              onClick={handleJoin}
+              className="border border-gray-300 text-gray-700 text-sm px-4 py-1.5 rounded-md hover:bg-gray-100 transition">
               스터디 참여하기
             </button>
           )}
