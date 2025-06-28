@@ -1,9 +1,8 @@
-
 const myStudyInfoRepository = require('../repository/myStudyInfoRepository');
 
 const myStudyInfoService = require('../service/myStudyInfoService');
-const STATUS = require('../common/status');
 
+const STATUS = require('../common/status');
 async function getStudyById(req, res, studyRoomId) {
     const {userId} = req.query;
 
@@ -76,7 +75,6 @@ async function getStudyById(req, res, studyRoomId) {
         }
     });
 }
-
 async function getOtherUserInfo(req, res, studyRoomId, otherUserId) {
 
     const getStudyRoomInfo = await myStudyInfoRepository.getStudyRoomInfo(studyRoomId);
@@ -92,7 +90,6 @@ async function getOtherUserInfo(req, res, studyRoomId, otherUserId) {
     res.status(200).json({getmyTeamInfoList})
 
 }
-
 
 async function postStudyAuth(req, res) {
     try {
@@ -141,4 +138,27 @@ async function postStudyAuth(req, res) {
     }
 }
 
-module.exports = { postStudyAuth, getStudyById, getOtherUserInfo };
+async function getCommentMember(req, res, studyRoomId, otherUserId) {
+
+    const CommentStudyMember = await myStudyInfoRepository.CommentStudyMember(studyRoomId, otherUserId);
+
+
+    res.status(200).json({CommentStudyMember})
+
+}
+
+async function postCommentStudyRoom(req, res, studyRoomId, otherUserId) {
+    console.log("-".repeat(100));
+    const { userId, userName, userProfile, content } = req.body;
+    console.log(userProfile);
+
+    try {
+        await myStudyInfoRepository.PostCommentStudyRoom(studyRoomId, otherUserId, userId, userName, userProfile, content);
+        res.status(201).json({ message: "댓글 등록 성공"});
+    } catch (error) {
+        console.error("Controller error:", error);
+        res.status(500).json({ message: "댓글 등록 실패", error: error.message });
+    }
+}
+
+module.exports = { postStudyAuth, getStudyById, getOtherUserInfo, postCommentStudyRoom, getCommentMember };
