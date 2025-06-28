@@ -151,3 +151,54 @@ export async function getStudyRoomMemberProfile(userId, studyRoomId) {
     if (conn) conn.release();
   }
 }
+
+export async function CommentStudyMember(studyRoomId, studyMemberId) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    const comments = await conn.query(
+        `
+      SELECT 
+        *
+      FROM COMMENTS
+      WHERE study_room_id = ?
+        AND study_member_id = ?
+        AND create_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+      ORDER BY create_at DESC;
+      `,
+        [studyRoomId, studyMemberId]
+    );
+
+    return { comments };
+  } catch (error) {
+    console.error("❌ 댓글 조회 실패", error);
+    throw error;
+  } finally {
+    if (conn) await conn.release();
+  }
+}
+
+export async function PostCommentStudyRoom(studyRoomId, studyMemberId, userId, userName, userProfile, content) {
+  let conn;
+  try {
+    conn = await pool.getConnection();
+
+    console.log("DB에 저장할 데이터:", { studyRoomId, studyMemberId, userId, userName, userProfile, content });
+
+    const now = new Date();
+
+    await conn.query(
+        `INSERT INTO COMMENTS (user_id, user_name, user_profile, study_room_id, study_member_id, content, create_at) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [userId, userName, userProfile, studyRoomId, studyMemberId, content, now]
+    );
+
+    return { success: true };
+  } catch (error) {
+    console.error("❌ 댓글 등록 실패", error);
+    throw error;
+  } finally {
+    if (conn) await conn.release();
+  }
+}
+
