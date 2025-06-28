@@ -85,13 +85,13 @@ export default function AppNavbar() {
                     <img
                         src="/assets/신한투자증권.png"
                         alt="logo"
-                        style={{ width: "20px", height: "20px", marginRight: "10px" }}
+                        style={{ width: "40px", height: "45px", marginRight: "5px" }}
                     />
                     <div
                         style={{
                             fontFamily: "MyLogoFont",
                             color: "#0046ff",
-                            fontSize: "20px",
+                            fontSize: "24px",
                         }}
                     >
                         PDA_LOG
@@ -117,8 +117,8 @@ export default function AppNavbar() {
                                     src={user.profile_image}
                                     alt="프로필 이미지"
                                     style={{
-                                        width: "40px",
-                                        height: "40px",
+                                        width: "50px",
+                                        height: "50px",
                                         borderRadius: "50%",
                                         objectFit: "cover",
                                         border: "1.5px solid #007bff",
@@ -126,7 +126,7 @@ export default function AppNavbar() {
                                 />
                                 <span
                                     style={{
-                                        fontWeight: "600",
+                                        fontWeight: "700",
                                         color: "#333",
                                         whiteSpace: "nowrap",
                                     }}
