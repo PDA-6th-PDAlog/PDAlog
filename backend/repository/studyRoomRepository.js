@@ -91,3 +91,18 @@ export async function insertUserToStudy(studyId, userId) {
     throw err;
   }
 }
+
+export async function findHostIdByStudyId(studyId) {
+  const [rows] = await pool.execute(
+    "SELECT host_id FROM STUDY_ROOMS WHERE id = ?",
+    [studyId]
+  );
+
+  return rows.host_id;
+}
+export async function deleteUserFromStudy(studyId, userId) {
+  await pool.execute(
+    "DELETE FROM STUDY_MEMBERS WHERE study_id = ? AND user_id = ?",
+    [studyId, userId]
+  );
+}

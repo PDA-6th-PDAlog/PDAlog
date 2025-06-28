@@ -80,4 +80,39 @@ async function joinStudyRoom(req, res) {
   }
 }
 
-module.exports = { createStudyRoom, getStudyRoom, joinStudyRoom };
+async function leaveStudyRoom(req, res) {
+  const studyId = Number(req.params.id);
+  const userId = req.user.id;
+
+  try {
+    // 방장 여부 확인
+    const isHost = await studyRoomService.isHost(studyId, userId);
+    if (isHost) {
+      return res.status(400).json({
+        success: false,
+        message: "방장은 스터디를 나갈 수 없습니다.",
+      });
+    }
+
+    // 나가기 처리
+    await studyRoomService.removeUserFromStudy(studyId, userId);
+
+    res.status(200).json({
+      success: true,
+      message: "스터디에서 나갔습니다.",
+    });
+  } catch (err) {
+    console.error("[CONTROLLER ERROR]", err);
+    res.status(500).json({
+      success: false,
+      message: "서버 오류가 발생했습니다.",
+    });
+  }
+}
+
+module.exports = {
+  createStudyRoom,
+  getStudyRoom,
+  joinStudyRoom,
+  leaveStudyRoom,
+};

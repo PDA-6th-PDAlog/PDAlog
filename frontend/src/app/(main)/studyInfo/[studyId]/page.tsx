@@ -18,6 +18,39 @@ export default function StudyRoomDetailPage() {
     return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
   };
 
+  const handleLeave = async () => {
+    try {
+      const res = await fetch(
+        `http://localhost:3001/study-rooms/${study.id}/leave`,
+        {
+          method: "DELETE",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        alert("✅ 스터디에서 나갔습니다!");
+
+        const refreshed = await fetch(
+          `http://localhost:3001/study-rooms/${study.id}`
+        );
+        const newData = await refreshed.json();
+        setStudy(newData);
+        setIsJoined(false);
+      } else {
+        alert(`⚠️ 나가기 실패: ${data.message}`);
+      }
+    } catch (err) {
+      console.error("스터디 나가기 오류:", err);
+      alert("😢 나가는 중 오류가 발생했습니다.");
+    }
+  };
+
   const handleJoin = async () => {
     try {
       const res = await fetch(
@@ -147,7 +180,9 @@ export default function StudyRoomDetailPage() {
         {/* 참여 버튼 */}
         <div className="flex justify-center">
           {isLoggedIn && isJoined ? (
-            <button className="border border-red-300 text-red-600 text-sm px-4 py-1.5 rounded-md hover:bg-red-50 transition">
+            <button
+              onClick={handleLeave}
+              className="border border-red-300 text-red-600 text-sm px-4 py-1.5 rounded-md hover:bg-red-50 transition">
               스터디 나가기
             </button>
           ) : (
