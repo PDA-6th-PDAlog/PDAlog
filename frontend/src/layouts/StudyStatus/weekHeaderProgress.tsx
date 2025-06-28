@@ -1,4 +1,5 @@
 import ProgressBarComponent from "@/layouts/StudyStatus/ProgressBarComponent";
+import ProgressDonutChart from "@/layouts/StudyStatus/ProgressDonutChart";
 
 interface WeekHeaderProps {
     currentWeek: number;
@@ -7,32 +8,48 @@ interface WeekHeaderProps {
     TotalWeek: number;
 }
 
-export default function WeekHeader({ currentWeek, weeklyRequiredCount, myAuthCount, TotalWeek}: WeekHeaderProps) {
+export default function WeekHeader({
+                                       currentWeek,
+                                       weeklyRequiredCount,
+                                       myAuthCount,
+                                       TotalWeek,
+                                   }: WeekHeaderProps) {
     const buttons = Array.from({ length: weeklyRequiredCount }, (_, i) => (
-        <button
+        <div
             key={i}
-            className="px-2 py-1 border rounded w-10 h-10"
+            className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold ${
+                i < myAuthCount ? "bg-green-500" : "bg-gray-300"
+            }`}
         >
-            {i < myAuthCount ? '⭕' : '-'}
-        </button>
+            {i < myAuthCount ? "✔" : "－"}
+        </div>
     ));
 
     return (
-        <div className="flex items-center">
-            <h1 className="text-xl font-semibold">{currentWeek}주차</h1>
-            <div className="flex gap-2 pl-10">
-                {buttons}
+        <section className="grid md:grid-cols-4 gap-6 bg-white p-6 rounded-xl shadow-md">
+            {/* 📅 현재 주차 */}
+            <div className="text-center space-y-1">
+                <div className="text-gray-500 text-sm">현재 주차</div>
+                <div className="text-2xl font-bold text-blue-700">{currentWeek}주차</div>
             </div>
-            <div>
-                <div className="text-xl font-semibold">전체 주차:</div>
-                <div className="gap-2 pl-10">
-                    {TotalWeek}
-                </div>
+
+            {/* 🧩 인증 카운트 버튼 */}
+            <div className="text-center">
+                <div className="text-gray-500 text-sm mb-2">이번주 인증</div>
+                <div className="flex justify-center gap-2">{buttons}</div>
             </div>
-            <div>
-                <p className="text-sm font-semibold">전체 진척도</p>
-                <ProgressBarComponent progress={currentWeek} total={TotalWeek} />
+
+            {/* 📈 전체 주차 */}
+            <div className="text-center space-y-1">
+                <div className="text-gray-500 text-sm">전체 주차</div>
+                <div className="text-xl font-bold text-gray-800">{TotalWeek}주차</div>
             </div>
-        </div>
+
+            {/* 📊 전체 진척도 */}
+            <div className="text-center">
+                <div className="text-gray-500 text-sm mb-2">스터디 전체 진행 비율</div>
+                <ProgressDonutChart currentWeek={currentWeek} totalWeek={TotalWeek} />
+            </div>
+        </section>
     );
 }

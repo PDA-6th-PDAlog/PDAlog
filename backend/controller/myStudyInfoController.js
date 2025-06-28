@@ -64,7 +64,7 @@ async function getStudyById(req, res, studyRoomId) {
         ,
         myInfo: {
             userId: Number(userId),
-            authCount: getMyBoardInfo.AuthCount,
+            authCount: getMyWeekAuthCount,
             authDates: getMyBoardInfo.authDates,
             currentWeekAuthCount: getMyWeekAuthCount
         },
@@ -96,7 +96,7 @@ async function getOtherUserInfo(req, res, studyRoomId, otherUserId) {
 
 async function postStudyAuth(req, res) {
     try {
-        const { studyId, userId, weekDate, content, isFull} = req.body;
+        const { studyId, userId, weekDate, content, isFull, currentWeek} = req.body;
         const file = req.file;
 
         if (!file) {
@@ -119,12 +119,14 @@ async function postStudyAuth(req, res) {
             });
         }
 
+
         const result = await myStudyInfoRepository.postStudyAuth({
             studyId,
             userId,
             weekDate,
             content,
             file,
+            currentWeek,
         });
 
         res.status(STATUS.SUCCESS.code).json({
