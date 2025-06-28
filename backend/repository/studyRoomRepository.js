@@ -63,13 +63,12 @@ export async function findById(studyId) {
 
   // 참여 멤버 조회
   const members = await pool.execute(
-    `SELECT u.username AS nickname, u.profile_image
+    `SELECT u.id, u.username AS nickname, u.profile_image
      FROM STUDY_MEMBERS sm
      JOIN USERS u ON sm.user_id = u.id
      WHERE sm.study_id = ?`,
     [studyId]
   );
-  console.log(members);
 
   return {
     ...study,

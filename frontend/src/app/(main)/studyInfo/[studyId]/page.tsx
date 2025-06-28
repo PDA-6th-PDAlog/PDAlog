@@ -3,10 +3,13 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { useUser } from "@/layouts/common/UserContext";
 
 export default function StudyRoomDetailPage() {
   const { studyId } = useParams();
   const [study, setStudy] = useState<any>(null);
+  const { user, isLoggedIn } = useUser();
+  const [isJoined, setIsJoined] = useState(false);
 
   const getTotalDays = (start: string, end: string) => {
     const startDate = new Date(start);
@@ -28,7 +31,17 @@ export default function StudyRoomDetailPage() {
     };
 
     fetchStudy();
-  }, [studyId]);
+  }, [studyId, user]);
+
+  useEffect(() => {
+    if (study && study.members && user?.id) {
+      study.members.forEach((member: any) => {
+        if (member.id === user.id) {
+          setIsJoined(true);
+        }
+      });
+    }
+  }, [study, user]);
 
   if (!study) {
     return (
@@ -100,9 +113,15 @@ export default function StudyRoomDetailPage() {
 
         {/* 참여 버튼 */}
         <div className="flex justify-center">
-          <button className="border border-gray-300 text-gray-700 text-sm px-4 py-1.5 rounded-md hover:bg-gray-100 transition">
-            스터디 참여하기
-          </button>
+          {isLoggedIn && isJoined ? (
+            <button className="border border-red-300 text-red-600 text-sm px-4 py-1.5 rounded-md hover:bg-red-50 transition">
+              스터디 나가기
+            </button>
+          ) : (
+            <button className="border border-gray-300 text-gray-700 text-sm px-4 py-1.5 rounded-md hover:bg-gray-100 transition">
+              스터디 참여하기
+            </button>
+          )}
         </div>
       </div>
     </main>
