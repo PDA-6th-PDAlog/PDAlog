@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function CreateStudyPage() {
+  const router = useRouter();
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -34,6 +37,11 @@ export default function CreateStudyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (Number(form.penalty) < 500 || Number(form.penalty) > 5000) {
+      alert("⚠️ 벌금은 최소 500원, 최대 5000원까지만 설정할 수 있어요!");
+      return;
+    }
 
     // 날짜 유효성 검사
     const start = new Date(form.startDate);
@@ -82,7 +90,7 @@ export default function CreateStudyPage() {
       if (!studyRes.ok) throw new Error("스터디 생성 실패");
 
       alert("🎉 스터디가 생성되었습니다!");
-      // 필요하면 페이지 이동도 가능: router.push("/studies");
+      router.push("/");
     } catch (err) {
       console.error("❌ 오류 발생:", err);
       alert("😢 오류가 발생했어요. 다시 시도해 주세요.");
@@ -103,8 +111,7 @@ export default function CreateStudyPage() {
     <main className="container py-5">
       <div
         className="mx-auto p-4 border rounded-4 shadow-sm bg-light-subtle"
-        style={{ maxWidth: "700px" }}
-      >
+        style={{ maxWidth: "700px" }}>
         <h4 className="mb-4 text-center fw-semibold text-dark">
           🌱 스터디 생성
         </h4>
@@ -130,8 +137,7 @@ export default function CreateStudyPage() {
               rows={3}
               value={form.description}
               onChange={handleChange}
-              required
-            ></textarea>
+              required></textarea>
           </div>
 
           <div className="row g-3 mb-3">
@@ -173,8 +179,7 @@ export default function CreateStudyPage() {
               name="frequency"
               className="form-select w-auto rounded-3"
               value={form.frequency}
-              onChange={handleChange}
-            >
+              onChange={handleChange}>
               <option value="1">주 1회</option>
               <option value="3">주 3회</option>
               <option value="5">주 5회</option>
@@ -187,11 +192,12 @@ export default function CreateStudyPage() {
             <input
               type="number"
               name="penalty"
-              className="form-control w-auto rounded-3"
+              className="form-control rounded-3 w-50"
               placeholder="예: 5000"
               value={form.penalty}
               onChange={handleChange}
-              min="0"
+              min="500"
+              max="5000"
               required
             />
           </div>
@@ -217,8 +223,7 @@ export default function CreateStudyPage() {
           <div className="text-end mt-4">
             <button
               type="submit"
-              className="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold shadow-sm"
-            >
+              className="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold shadow-sm">
               스터디 생성하기
             </button>
           </div>
