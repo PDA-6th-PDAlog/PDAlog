@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useUser } from "@/layouts/common/UserContext";
+import Link from "next/link";
 
 interface Comment {
     id: number;
@@ -31,7 +32,6 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
             .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
     };
 
-    // 댓글 목록 불러오기 함수
     const fetchComments = async () => {
         try {
             const res = await fetch(
@@ -77,7 +77,6 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
 
             if (!response.ok) throw new Error("댓글 작성 실패");
 
-            // 댓글 등록 후 다시 댓글 리스트 불러오기
             await fetchComments();
 
             setInput("");
@@ -99,14 +98,20 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
                 )}
                 {comments.map((c) => (
                     <li
-                        key={c.id ?? `${c.user_id}-${c.create_at}`} // id 없으면 fallback key
+                        key={c.id ?? `${c.user_id}-${c.create_at}`}
                         className="flex gap-6 items-start border border-gray-200 p-4 rounded-xl bg-gray-50 hover:shadow-md transition-shadow"
                     >
-                        <img
-                            src={c.user_profile || "/default-profile.png"}
-                            alt={`${c.user_name} 프로필`}
-                            className="w-16 h-16 rounded-lg object-cover flex-shrink-0 border border-gray-300"
-                        />
+                        <Link href={`/profile/${c.user_id}`}>
+                            <img
+                                src={c.user_profile || "/default-profile.png"}
+                                alt={`${c.user_name} 프로필`}
+                                className="w-16 h-16 rounded-full object-cover flex-shrink-0 border border-gray-300 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-130"
+                                onError={(e) => {
+                                    e.currentTarget.onerror = null;
+                                    e.currentTarget.src = "/default-profile.png";
+                                }}
+                            />
+                        </Link>
                         <div className="flex-1 flex flex-col justify-center">
                             <div className="flex items-center justify-between">
                                 <p className="font-semibold text-blue-700 text-lg">{c.user_name}</p>
