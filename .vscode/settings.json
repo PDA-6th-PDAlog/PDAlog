@@ -1,18 +1,1 @@
-{
-  "sqltools.connections": [
-    {
-      "mysqlOptions": {
-        "authProtocol": "default",
-        "enableSsl": "Disabled"
-      },
-      "previewLimit": 50,
-      "server": "mydb.c5gkus4mo5za.ap-northeast-2.rds.amazonaws.com",
-      "port": 3306,
-      "driver": "MariaDB",
-      "name": "MyRDS",
-      "database": "pdalog",
-      "username": "admin",
-      "password": "474539cisxO!"
-    }
-  ]
-}
+// 
