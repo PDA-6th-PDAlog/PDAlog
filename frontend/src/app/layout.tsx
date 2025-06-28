@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import AppNavbar from "@/layouts/MyNavbar/MyNavbar"; // ✅ 클라이언트 컴포넌트를 import
 import "../assets/styles/font.css"; // 또는 ./assets/styles/font.css
+import container from "@/assets/styles/container.module.css"; // ✅ CSS 모듈을 import
 export const metadata = {
   title: "My Project",
   description: "스터디 인증 서비스",
@@ -29,7 +30,8 @@ export default function RootLayout({
             backgroundSize: "contain", // ✅ 이미지 크기 그대로 표시
             position: "relative",
             zIndex: 0,
-          }}>
+          }}
+        >
           <AppNavbar /> {/* 클라 컴포넌트 OK */}
           {children}
         </div>

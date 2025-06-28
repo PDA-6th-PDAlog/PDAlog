@@ -45,9 +45,25 @@ const PenaltySidebar = ({ users }: PenaltySidebarProps) => {
                 justifyContent: "center",
                 fontSize: "20px",
                 color: "#fff",
+                overflow: "hidden",
               }}
             >
-              👤
+              {user.profileImage ? (
+                <img
+                  src={user.profileImage}
+                  alt={user.name}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "50%",
+                  }}
+                />
+              ) : (
+                <span role="img" aria-label="profile">
+                  👤
+                </span>
+              )}
             </div>
             <div style={{ flexGrow: 1 }}>
               <div style={{ fontWeight: 500 }}>{user.name}</div>

@@ -199,22 +199,35 @@ export default function AppNavbar() {
                                 로그인
                             </Nav.Link>
 
-                            <Nav.Link
-                                as={Link}
-                                href="/signUp"
-                                style={{
-                                    backgroundColor: "#007bff",
-                                    color: "white",
-                                    borderRadius: "8px",
-                                    padding: "6px 12px",
-                                }}
-                            >
-                                회원가입
-                            </Nav.Link>
-                        </div>
-                    )}
-                </div>
-            </Container>
-        </Navbar>
-    );
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <div style={{ display: "flex", gap: "10px" }}>
+          <Nav.Link
+            as={Link}
+            href="/login"
+            style={{
+              backgroundColor: "#007bff",
+              color: "white",
+              borderRadius: "8px",
+              padding: "6px 12px",
+            }}
+          >
+            로그인
+          </Nav.Link>
+          <Nav.Link
+            as={Link}
+            href="/signup"
+            style={{
+              backgroundColor: "#007bff",
+              color: "white",
+              borderRadius: "8px",
+              padding: "6px 12px",
+            }}
+          >
+            회원가입
+          </Nav.Link>
+        </div>
+      </Container>
+    </Navbar>
+  );
+
 }
