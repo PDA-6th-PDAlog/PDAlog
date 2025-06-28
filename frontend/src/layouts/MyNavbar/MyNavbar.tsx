@@ -34,7 +34,6 @@ export default function AppNavbar() {
             });
     }, []);
 
-    // 바깥 클릭 시 드롭다운 닫기 처리
     useEffect(() => {
         function handleClickOutside(event: MouseEvent) {
             if (
@@ -60,7 +59,7 @@ export default function AppNavbar() {
 
     const handleLogout = async () => {
         try {
-            const res = await fetch("http://localhost:3001/logout", {
+            const res = await fetch("http://localhost:3001/login/logout", {
                 method: "POST",
                 credentials: "include",
             });
@@ -69,6 +68,7 @@ export default function AppNavbar() {
                 setUserInfo(null);
                 setDropdownOpen(false);
                 alert("로그아웃 되었습니다.");
+                window.location.href = "/";
             } else {
                 alert("로그아웃 실패");
             }
@@ -88,46 +88,36 @@ export default function AppNavbar() {
                     padding: "2rem",
                 }}
             >
-                <Navbar.Brand
-                    as={Link}
-                    href="/"
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                    }}
-                >
-                    <div style={{ display: "flex", flex: "flex-start" }}>
-                        <img
-                            src="/assets/신한투자증권.png"
-                            alt="logo"
-                            style={{ width: "20px", height: "20px", marginRight: "10px" }}
-                        />
-                        <div
-                            style={{
-                                fontFamily: "MyLogoFont",
-                                color: "#0046ff",
-                                fontSize: "20px",
-                            }}
-                        >
-                            PDA_LOG
-                        </div>
+                <Navbar.Brand as={Link} href="/" style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                        src="/assets/신한투자증권.png"
+                        alt="logo"
+                        style={{ width: "20px", height: "20px", marginRight: "10px" }}
+                    />
+                    <div
+                        style={{
+                            fontFamily: "MyLogoFont",
+                            color: "#0046ff",
+                            fontSize: "20px",
+                        }}
+                    >
+                        PDA_LOG
                     </div>
                 </Navbar.Brand>
 
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
                 <div style={{ position: "relative" }} ref={dropdownRef}>
                     {isLoggedIn && userInfo ? (
                         <>
-                            <div
-                                onClick={toggleDropdown}
-                                style={{
-                                    display: "flex",
-                                    alignItems: "center",
-                                    cursor: "pointer",
-                                    userSelect: "none",
-                                    gap: "10px",
-                                }}
-                            >
+                            <div onClick={toggleDropdown}
+                                 style={{
+                                     display: "flex",
+                                     alignItems: "center",
+                                     cursor: "pointer",
+                                     userSelect: "none",
+                                     gap: "10px",
+                                 }}>
                                 <img
                                     src={userInfo.profile_image}
                                     alt="프로필 이미지"
@@ -146,8 +136,8 @@ export default function AppNavbar() {
                                         whiteSpace: "nowrap",
                                     }}
                                 >
-                  {userInfo.username}
-                </span>
+                                    {userInfo.username}
+                                </span>
                             </div>
 
                             {dropdownOpen && (
@@ -198,36 +188,22 @@ export default function AppNavbar() {
                             >
                                 로그인
                             </Nav.Link>
-
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <div style={{ display: "flex", gap: "10px" }}>
-          <Nav.Link
-            as={Link}
-            href="/login"
-            style={{
-              backgroundColor: "#007bff",
-              color: "white",
-              borderRadius: "8px",
-              padding: "6px 12px",
-            }}
-          >
-            로그인
-          </Nav.Link>
-          <Nav.Link
-            as={Link}
-            href="/signup"
-            style={{
-              backgroundColor: "#007bff",
-              color: "white",
-              borderRadius: "8px",
-              padding: "6px 12px",
-            }}
-          >
-            회원가입
-          </Nav.Link>
-        </div>
-      </Container>
-    </Navbar>
-  );
-
+                            <Nav.Link
+                                as={Link}
+                                href="/signup"
+                                style={{
+                                    backgroundColor: "#007bff",
+                                    color: "white",
+                                    borderRadius: "8px",
+                                    padding: "6px 12px",
+                                }}
+                            >
+                                회원가입
+                            </Nav.Link>
+                        </div>
+                    )}
+                </div>
+            </Container>
+        </Navbar>
+    );
 }

@@ -48,6 +48,7 @@ export default function LoginPage() {
       });
 
       alert("로그인 성공!");
+      window.location.href = "/";
       // TODO: 토큰 저장 & 페이지 이동 (ex: localStorage.setItem("token", data.token))
     } catch (err) {
       console.error("로그인 실패:", err);
