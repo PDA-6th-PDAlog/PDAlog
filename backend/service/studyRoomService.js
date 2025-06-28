@@ -25,6 +25,8 @@ exports.addUserToStudy = async (studyId, userId) => {
 
 exports.isHost = async (studyId, userId) => {
   const hostId = await studyRoomRepository.findHostIdByStudyId(studyId);
+  console.log(hostId);
+  console.log(userId);
   return hostId === userId;
 };
 

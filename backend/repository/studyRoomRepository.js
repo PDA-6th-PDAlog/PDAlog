@@ -97,7 +97,8 @@ export async function findHostIdByStudyId(studyId) {
     "SELECT host_id FROM STUDY_ROOMS WHERE id = ?",
     [studyId]
   );
-  return rows.length > 0 ? rows[0].host_id : null;
+
+  return rows.host_id;
 }
 export async function deleteUserFromStudy(studyId, userId) {
   await pool.execute(
