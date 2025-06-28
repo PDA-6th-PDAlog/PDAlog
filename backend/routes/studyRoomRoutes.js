@@ -22,4 +22,26 @@ router.get(
   studyRoomController.getStudyRoom
 );
 
+router.post(
+  "/:id/join",
+  (req, res, next) => {
+    console.log(`[ROUTER] POST /study-rooms/${req.params.id}/join 요청 들어옴`);
+    next();
+  },
+  authenticate,
+  studyRoomController.joinStudyRoom
+);
+
+router.delete(
+  "/:id/leave",
+  (req, res, next) => {
+    console.log(
+      `[ROUTER] DELETE /study-rooms/${req.params.id}/leave 요청 들어옴`
+    );
+    next();
+  },
+  authenticate,
+  studyRoomController.leaveStudyRoom
+);
+
 module.exports = router;
