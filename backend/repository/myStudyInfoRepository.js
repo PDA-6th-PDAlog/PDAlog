@@ -4,13 +4,9 @@ import fs from "fs";
 import path from "path";
 
 export async function postStudyAuth({
-  studyId,
-  userId,
-  weekDate,
-  content,
-  file,
-}) {
+  studyId, userId, weekDate, content, file, currentWeek}) {
   let conn;
+
   try {
     // 1. S3 업로드
     const localFilePath = file.path;
@@ -22,10 +18,10 @@ export async function postStudyAuth({
     conn = await pool.getConnection();
 
     const query = `
-            INSERT INTO WEEKLY_STUDIES (study_id, user_id, week_date, proof_image, content)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO WEEKLY_STUDIES (study_id, user_id, week_date, week_number, proof_image, content)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
-    const values = [studyId, userId, weekDate, s3Url, content];
+    const values = [studyId, userId, weekDate, currentWeek, s3Url, content];
 
     await conn.execute(query, values);
 
