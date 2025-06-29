@@ -122,7 +122,7 @@ const getWeeklyFines = async (startDate, endDate) => {
       total_penalty: Number(row.total_penalty),
     }));
 
-    console.log("✅ Repository 정상 rows:", normalizedRows);
+    //console.log("✅ Repository 정상 rows:", normalizedRows);
     console.log(typeof normalizedRows);
     return normalizedRows;
   } catch (err) {

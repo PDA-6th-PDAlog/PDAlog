@@ -4,6 +4,7 @@
 import { linkSync } from "fs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { UserProvider, useUser } from "../common/UserContext";
 
 interface Study {
   id: number;
@@ -32,6 +33,7 @@ export default function StudySection({
   createBoxLink,
 }: StudySectionProps) {
   const router = useRouter();
+  const { user, isLoggedIn } = useUser();
   // // 컴포넌트 렌더링
   // // 전체 스터디 목록을 렌더링
   return (

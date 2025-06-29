@@ -12,7 +12,7 @@ async function getAllStudies(req, res) {
     res.status(STATUS.SUCCESS.code).json({
       message: STATUS.SUCCESS.message,
       data: studies,
-    })
+    });
   } catch (error) {
     console.error("[CONTROLLER ERROR]", error);
     res.status(STATUS.INTERNAL_ERROR.code).json({
@@ -23,7 +23,7 @@ async function getAllStudies(req, res) {
 
 const getUserStudyRooms = async (req, res) => {
   try {
-    const userId = 1; // 테스트용 하드코딩
+    const userId = req.user.id; // ← 요거!
     const rows = await mainService.getMyStudyRooms(userId);
     // console.log("🔥 getMyStudyRooms rows 확인: controller", rows);
     return res.status(200).json({
