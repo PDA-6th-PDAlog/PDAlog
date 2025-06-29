@@ -8,6 +8,11 @@ export default function CreateStudyPage() {
   const router = useRouter();
   const { user, isLoggedIn } = useUser();
 
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -65,7 +70,7 @@ export default function CreateStudyPage() {
         const imageForm = new FormData();
         imageForm.append("file", form.thumbnail);
 
-        const uploadRes = await fetch("http://localhost:3001/test/upload", {
+        const uploadRes = await fetch(`${getApiBaseUrl()}/test/upload`, {
           method: "POST",
           body: imageForm,
         });
@@ -86,7 +91,7 @@ export default function CreateStudyPage() {
         thumbnail_url: thumbnailUrl,
       };
 
-      const studyRes = await fetch("http://localhost:3001/study-rooms", {
+      const studyRes = await fetch(`${getApiBaseUrl()}/study-rooms`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

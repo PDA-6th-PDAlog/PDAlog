@@ -10,6 +10,11 @@ export default function LoginPage() {
     password: "",
   });
 
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
+
   const [error, setError] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +27,7 @@ export default function LoginPage() {
     setError(null);
 
     try {
-      const res = await fetch("http://localhost:3001/login", {
+      const res = await fetch(`${getApiBaseUrl()}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

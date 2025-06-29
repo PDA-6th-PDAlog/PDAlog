@@ -32,10 +32,15 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
             .padStart(2, "0")}:${d.getMinutes().toString().padStart(2, "0")}`;
     };
 
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
+
+
     const fetchComments = async () => {
         try {
             const res = await fetch(
-                `http://localhost:3001/myStudyInfo/comment/${studyRoomId}/${studyMemberId}`
+                `${getApiBaseUrl()}/myStudyInfo/comment/${studyRoomId}/${studyMemberId}`
             );
             if (!res.ok) throw new Error("댓글 불러오기 실패");
             const data = await res.json();
@@ -60,7 +65,7 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
 
         try {
             const response = await fetch(
-                `http://localhost:3001/myStudyInfo/comment/${studyRoomId}/${studyMemberId}`,
+                `${getApiBaseUrl()}/myStudyInfo/comment/${studyRoomId}/${studyMemberId}`,
                 {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },

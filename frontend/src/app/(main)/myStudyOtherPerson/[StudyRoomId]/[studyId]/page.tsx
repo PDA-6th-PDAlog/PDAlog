@@ -10,11 +10,15 @@ export default function myStudyOtherPersonPage() {
 
     const { StudyRoomId, studyId } = useParams();
 
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
+
 
     useEffect(() => {
         const fetchStudyTeamInfo = async () => {
             try {
-                const res = await fetch(`http://localhost:3001/myStudyInfo/${StudyRoomId}/${studyId}`);
+                const res = await fetch(`${getApiBaseUrl()}/myStudyInfo/${StudyRoomId}/${studyId}`);
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
                 }

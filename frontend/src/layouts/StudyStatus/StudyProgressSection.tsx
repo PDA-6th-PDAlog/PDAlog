@@ -24,6 +24,11 @@ export default function StudyProgressSection({
         { name: "남은 횟수", value: Math.max(weeklyRequiredCount - myAuthCount, 0) },
     ];
 
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
+
+
     const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
@@ -52,7 +57,7 @@ export default function StudyProgressSection({
             formData.append("currentWeek", currentWeek);
 
             try {
-                const response = await fetch("http://localhost:3001/myStudyInfo/studyAuth", {
+                const response = await fetch(`${getApiBaseUrl()}/myStudyInfo/studyAuth`, {
                     method: "POST",
                     body: formData,
                 });

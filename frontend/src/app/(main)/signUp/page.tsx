@@ -36,6 +36,10 @@ export default function SignupPage() {
     }
   };
 
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -47,7 +51,7 @@ export default function SignupPage() {
       imageData.append("file", form.profileImage);
 
       try {
-        const uploadRes = await fetch("http://localhost:3001/test/upload", {
+        const uploadRes = await fetch(`${getApiBaseUrl()}/test/upload`, {
           method: "POST",
           body: imageData,
         });
@@ -76,7 +80,7 @@ export default function SignupPage() {
     };
 
     try {
-      const res = await fetch("http://localhost:3001/signUp", {
+      const res = await fetch(`${getApiBaseUrl()}/signUp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

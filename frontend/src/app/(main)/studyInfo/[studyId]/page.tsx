@@ -18,10 +18,15 @@ export default function StudyRoomDetailPage() {
     return Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
   };
 
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
+
   const handleLeave = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/study-rooms/${study.id}/leave`,
+        `${getApiBaseUrl()}/study-rooms/${study.id}/leave`,
         {
           method: "DELETE",
           credentials: "include",
@@ -37,7 +42,7 @@ export default function StudyRoomDetailPage() {
         alert("✅ 스터디에서 나갔습니다!");
 
         const refreshed = await fetch(
-          `http://localhost:3001/study-rooms/${study.id}`
+          `${getApiBaseUrl()}/study-rooms/${study.id}`
         );
         const newData = await refreshed.json();
         setStudy(newData);
@@ -54,7 +59,7 @@ export default function StudyRoomDetailPage() {
   const handleJoin = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3001/study-rooms/${study.id}/join`,
+        `${getApiBaseUrl()}/study-rooms/${study.id}/join`,
         {
           method: "POST",
           credentials: "include",
@@ -70,7 +75,7 @@ export default function StudyRoomDetailPage() {
         alert("🎉 스터디에 참가했습니다!");
 
         const refreshed = await fetch(
-          `http://localhost:3001/study-rooms/${study.id}`
+          `${getApiBaseUrl()}/study-rooms/${study.id}`
         );
         const newData = await refreshed.json();
         setStudy(newData);
@@ -88,7 +93,7 @@ export default function StudyRoomDetailPage() {
     const fetchStudy = async () => {
       try {
         if (!studyId) return;
-        const res = await fetch(`http://localhost:3001/study-rooms/${studyId}`);
+        const res = await fetch(`${getApiBaseUrl()}/study-rooms/${studyId}`);
         const data = await res.json();
         setStudy(data);
       } catch (err) {

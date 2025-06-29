@@ -21,10 +21,14 @@ type StudyPenalty = {
 export default function PenaltyBarChart() {
   const [data, setData] = useState<StudyPenalty[]>([]);
 
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("http://localhost:3001/weekly-fine-ranking");
+        const res = await fetch(`${getApiBaseUrl()}/weekly-fine-ranking`);
         const json = await res.json();
 
         if (json.success && json.data) {
