@@ -63,12 +63,13 @@ export default function Page() {
 
   const dateHeaders =
     today !== ""
-      ? Array.from({ length: 6 }, (_, i) =>
+      ? Array.from({ length: 7 }, (_, i) =>
           dayjs(today)
-            .subtract(4 - i, "day")
+            .subtract(6 - i, "day")
             .format("M/D")
         )
       : [];
+  console.log("date", dateHeaders);
 
   // const getProgressPercentage = (completed: number, total: number) => {
   //   return (completed / total) * 100;
