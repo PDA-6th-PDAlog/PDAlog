@@ -32,7 +32,6 @@ type StudyPenalty = {
 };
 
 function HomePageContent() {
-  // ✅ 훅은 컴포넌트 안에서만 써야 한다!
   const [myStudies, setMyStudies] = useState<Study[]>([]);
   const [studies, setStudies] = useState<Study[]>([]);
   const [userPenalties, setUserPenalties] = useState<any[]>([]);
@@ -58,14 +57,8 @@ function HomePageContent() {
     const fetchMyStudies = async () => {
       if (!isLoggedIn || !user) return;
 
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
       const res = await fetch("http://localhost:3001/my-studies", {
         credentials: "include",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
       });
 
       const json = await res.json();
