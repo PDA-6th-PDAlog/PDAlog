@@ -47,9 +47,10 @@ router.get("/:id", async (req, res, next) => {
 
       // 일주일 날짜 배열 생성
       const dateArray = [];
-      for (let i = 6; i >= 1; i--) {
+      for (let i = 6; i >= 0; i--) {
         dateArray.push(dayjs(today).subtract(i, "day").format("YYYY-MM-DD"));
       }
+      console.log("생성 날짜 배열", dateArray);
 
       // O/X 배열 생성
       const dateStatuses = dateArray.map((date) => {
