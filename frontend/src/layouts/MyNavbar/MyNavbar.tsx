@@ -80,7 +80,7 @@ export default function AppNavbar() {
       <Container
         className="d-flex justify-content-between align-items-center"
         style={{
-          maxWidth: "1200px",
+          // maxWidth: "1200px",
           margin: "0 auto",
           padding: "2rem",
         }}
@@ -119,6 +119,7 @@ export default function AppNavbar() {
                   cursor: "pointer",
                   userSelect: "none",
                   gap: "10px",
+                  paddingLeft: "10px",
                 }}
               >
                 <img
@@ -178,7 +179,7 @@ export default function AppNavbar() {
               )}
             </>
           ) : (
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ display: "flex", gap: "10px", paddingLeft: "10px" }}>
               <Nav.Link
                 as={Link}
                 href="/login"

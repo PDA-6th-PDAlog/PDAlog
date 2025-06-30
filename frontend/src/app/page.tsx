@@ -71,7 +71,7 @@ export default function HomePage() {
           id: item.id,
           title: item.title,
           description: item.description,
-          thumbnailUrl: item.thumbnail_url ?? null,
+          thumbnail_url: item.thumbnail_url ?? null,
           startDate: item.start_date,
           endDate: item.end_date,
           penaltyAmount: item.penalty_amount,
@@ -178,9 +178,9 @@ export default function HomePage() {
             flexGrow: 1,
           }}
         >
-          <div className="pl-4 pr-4">
+          <div className="pl-17 pr-10">
             <Container
-              style={{ maxWidth: "1200px", margin: "0 auto", padding: "1rem" }}
+              style={{ maxWidth: "1100px", margin: "0 auto", padding: "1rem" }}
             >
               <StudySection
                 title="내가 참여한 스터디"
@@ -188,7 +188,11 @@ export default function HomePage() {
                 link="/myStudyInfo"
                 fontSize="1.5rem"
                 createBoxLink="/createStudy"
-                boxTitle="새로운 스터디 만들기"
+                boxTitle={
+                  <>
+                    새로운 스터디<br />만들기
+                  </>
+                }
               />
               <div className="pb-6"></div>
               <StudySection

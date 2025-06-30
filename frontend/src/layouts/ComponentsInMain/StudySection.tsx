@@ -3,6 +3,7 @@
 
 // import { linkSync } from "fs";
 import { useRouter } from "next/navigation";
+import {ReactNode} from "react";
 // import { useEffect, useState } from "react";
 // import { UserProvider, useUser } from "../common/UserContext";
 
@@ -23,7 +24,7 @@ interface StudySectionProps {
   fontSize?: string;
   link?: string;
   createBoxLink?: string;
-  boxTitle: string;
+  boxTitle: ReactNode;
 }
 
 export default function StudySection({
@@ -73,7 +74,7 @@ export default function StudySection({
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
+              // justifyContent: "center",
               overflow: "hidden",
               padding: 0,
             }}
@@ -112,23 +113,42 @@ export default function StudySection({
               )}
             </div>
             <div
-              style={{
-                width: "100%",
-                height: "20%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontWeight: 600,
-                fontSize: "1rem",
-                textAlign: "center",
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-                padding: "0 0.5rem",
-              }}
+                style={{
+                  width: "100%",
+                  height: "20%",
+                  display: "flex",
+                  alignItems: "center",
+                  // justifyContent: "center",
+                  fontWeight: 600,
+                  fontSize: "1rem",
+                  textAlign: "center",
+                  overflow: "hidden",
+                  paddingLeft: "0.5rem",
+                  paddingRight: "0.5rem",
+                  position: "relative",
+                }}
             >
-              {study.title}
+  <span
+      style={{
+        display: "inline-block",
+        whiteSpace: "nowrap",
+        transform: "translateX(0)",
+        transition: "transform 1s ease",
+      }}
+      onMouseEnter={(e) => {
+        const parentWidth = (e.currentTarget.parentElement?.offsetWidth || 0);
+        const scrollWidth = e.currentTarget.scrollWidth;
+        const offset = scrollWidth > parentWidth ? -(scrollWidth - parentWidth) : 0;
+        e.currentTarget.style.transform = `translateX(${offset}px)`;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.transform = "translateX(0)";
+      }}
+  >
+    {study.title}
+  </span>
             </div>
+
           </div>
         ))}
 
