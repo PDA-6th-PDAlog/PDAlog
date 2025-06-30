@@ -72,10 +72,10 @@ export default function Page() {
   // };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen">
       <div className="max-w-4xl mx-auto px-4 py-8 space-y-6">
         {/* Profile Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
+        <div className="bg-gray-50 rounded-2xl p-6 shadow-sm border-0">
           <div className="flex items-center gap-4">
             {userData?.profile_image ? (
               <img
@@ -100,17 +100,20 @@ export default function Page() {
         </div>
 
         {/* Study Dashboard */}
-        <div className="bg-white rounded-2xl shadow-sm border-0 overflow-hidden">
+        <div className="bg-gray-50 rounded-2xl shadow-sm border-0 overflow-hidden">
           <div className="p-6 pb-4">
             <h2 className="text-xl font-bold text-gray-900 mb-6">
               참여중인 스터디
+              <span className="float-right text-blue-600 text-xl font-bold">
+                {studyData.length}개
+              </span>
             </h2>
           </div>
 
           {/* Desktop View */}
           <div className="hidden lg:block">
             <div className="px-6">
-              <div className="grid grid-cols-8 gap-4 pb-4 border-b border-gray-100">
+              <div className="grid grid-cols-9 gap-2 pb-4 border-b border-gray-100">
                 <div className="col-span-2 text-sm font-medium text-gray-600">
                   스터디명
                 </div>
@@ -135,7 +138,7 @@ export default function Page() {
                   key={index}
                   className="px-6 py-5 hover:bg-gray-50/50 transition-colors"
                 >
-                  <div className="grid grid-cols-8 gap-4 items-center">
+                  <div className="grid grid-cols-9 gap-2 items-center">
                     <div className="col-span-2">
                       <span className="font-medium text-gray-900">
                         {study.name}
@@ -224,19 +227,19 @@ export default function Page() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-2 gap-4">
+        {/* <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
             <div className="text-2xl font-bold text-gray-900 mb-1">
               {studyData.length}
             </div>
             <div className="text-sm text-gray-500">참여중인 스터디</div>
-          </div>
-          {/* <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
+          </div> */}
+        {/* <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
             <div className="text-2xl font-bold text-blue-600 mb-1">75%</div>
             <div className="text-sm text-gray-500">평균 참여율</div>
           </div> */}
-        </div>
       </div>
     </div>
+    // </div>
   );
 }
