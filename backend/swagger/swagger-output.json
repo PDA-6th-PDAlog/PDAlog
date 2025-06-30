@@ -4,7 +4,7 @@
     "title": "Study API",
     "description": "스터디 모집 플랫폼 API 문서"
   },
-  "host": "3.38.218.182:3001",
+  "host": "localhost:3001",
   "schemes": ["http"],
   "paths": {
     "/login": {
