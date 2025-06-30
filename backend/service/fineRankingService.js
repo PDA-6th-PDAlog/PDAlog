@@ -56,7 +56,7 @@ export async function calculateFineRanking() {
 
       result.push({
         username: user.username,
-        email: user.email,
+        email: user.id,
         profileImage: user.profile_image,
         totalPenalty: total_fine,
       });
