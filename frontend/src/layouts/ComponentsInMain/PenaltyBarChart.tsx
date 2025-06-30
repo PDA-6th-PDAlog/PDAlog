@@ -72,9 +72,22 @@ export default function PenaltyBarChart() {
         ⚠️ 지난주 스터디별 벌금순위 ⚠️
       </h3>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
+        <BarChart
+            data={data}
+            margin={{ top: 30, right: 20, left: 20, bottom: 40 }} // ✅ 여백 추가
+        >
           <CartesianGrid strokeDasharray="3 3" vertical={false} />
-          <XAxis dataKey="study" stroke="#000" />
+          <XAxis
+              dataKey="study"
+              stroke="#000"
+              interval={0} // 모든 항목 표시
+              tickLine={false}
+              tick={{ fontSize: 12 }}
+              tickFormatter={(value: string) =>
+                  value.length > 6 ? value.slice(0, 6) + "…" : value
+              }
+          />
+
           <YAxis stroke="#000" />
           <Tooltip
             formatter={(value: number) => `${value.toLocaleString()}원`}

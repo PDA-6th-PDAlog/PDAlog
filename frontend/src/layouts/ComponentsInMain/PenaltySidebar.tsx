@@ -36,7 +36,7 @@ const PenaltySidebar = ({ users }: PenaltySidebarProps) => {
       >
         지난주 벌금 순위
       </h3>
-      <ul style={{ listStyle: "none", padding: 0 }}>
+      <ul style={{ listStyle: "none", padding: 0, paddingLeft: "1.5rem" }}>
         {users.map((user) => (
           <li
             key={user.id}
@@ -44,7 +44,7 @@ const PenaltySidebar = ({ users }: PenaltySidebarProps) => {
               display: "flex",
               alignItems: "center",
               marginBottom: "1rem",
-              gap: "0.5rem",
+              gap: "1.5rem",
             }}
           >
             <Link
