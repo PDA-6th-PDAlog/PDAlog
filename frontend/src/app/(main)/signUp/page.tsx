@@ -93,122 +93,126 @@ export default function SignupPage() {
       if (res.ok) {
         alert("회원가입 성공!");
         window.location.href = "/login";
-        console.log(data);
       } else {
-        alert("회원가입 실패: " + data.message);
+        // 👇 인증 코드 불일치 처리
+        if (res.status === 403) {
+          alert("인증 코드가 일치하지 않습니다.");
+        } else {
+          alert("회원가입 실패: " + data.message);
+        }
       }
     } catch (error) {
       console.error("회원가입 에러:", error);
       alert("서버 통신 중 오류가 발생했습니다.");
     }
-  };
+  }
 
-  return (
-    <Container className="mt-5" style={{ maxWidth: "480px" }}>
-      <h2 className="mb-4 text-center">회원가입</h2>
-      <Form onSubmit={handleSubmit}>
-        {/* 이메일 */}
-        <Form.Group className="mb-3" controlId="formEmail">
-          <Form.Label>이메일</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="example@example.com"
-            name="email"
-            value={form.email}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+    return (
+        <Container className="mt-5" style={{maxWidth: "480px"}}>
+          <h2 className="mb-4 text-center">회원가입</h2>
+          <Form onSubmit={handleSubmit}>
+            {/* 이메일 */}
+            <Form.Group className="mb-3" controlId="formEmail">
+              <Form.Label>이메일</Form.Label>
+              <Form.Control
+                  type="email"
+                  placeholder="example@example.com"
+                  name="email"
+                  value={form.email}
+                  onChange={handleChange}
+                  required
+              />
+            </Form.Group>
 
-        {/* 이름 */}
-        <Form.Group className="mb-3" controlId="formName">
-          <Form.Label>이름</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="홍길동"
-            name="name"
-            value={form.name}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+            {/* 이름 */}
+            <Form.Group className="mb-3" controlId="formName">
+              <Form.Label>이름</Form.Label>
+              <Form.Control
+                  type="text"
+                  placeholder="홍길동"
+                  name="name"
+                  value={form.name}
+                  onChange={handleChange}
+                  required
+              />
+            </Form.Group>
 
-        {/* 비밀번호 */}
-        <Form.Group className="mb-3" controlId="formPassword">
-          <Form.Label>비밀번호</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="********"
-            name="password"
-            value={form.password}
-            onChange={handleChange}
-            required
-            minLength={8}
-          />
-        </Form.Group>
+            {/* 비밀번호 */}
+            <Form.Group className="mb-3" controlId="formPassword">
+              <Form.Label>비밀번호</Form.Label>
+              <Form.Control
+                  type="password"
+                  placeholder="********"
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  required
+                  minLength={8}
+              />
+            </Form.Group>
 
-        {/* 프로필 이미지 */}
-        <Form.Group className="mb-3">
-          <Form.Label>프로필 사진</Form.Label>
-          <div
-            onDrop={handleDrop}
-            onDragOver={(e) => e.preventDefault()}
-            onClick={() =>
-              document.getElementById("profileImageInput")?.click()
-            }
-            className="border border-dashed border-secondary rounded p-4 text-center"
-            style={{ cursor: "pointer", backgroundColor: "#f9f9f9" }}>
-            {previewImage ? (
-              <div>
-                <Image
-                  src={previewImage}
-                  roundedCircle
-                  width={120}
-                  height={120}
-                  alt="프로필 미리보기"
-                  className="mb-2 d-block mx-auto"
-                />
-                <p className="text-muted mb-0">
-                  이미지를 클릭 또는 드래그해서 변경하세요
-                </p>
+            {/* 프로필 이미지 */}
+            <Form.Group className="mb-3">
+              <Form.Label>프로필 사진</Form.Label>
+              <div
+                  onDrop={handleDrop}
+                  onDragOver={(e) => e.preventDefault()}
+                  onClick={() =>
+                      document.getElementById("profileImageInput")?.click()
+                  }
+                  className="border border-dashed border-secondary rounded p-4 text-center"
+                  style={{cursor: "pointer", backgroundColor: "#f9f9f9"}}>
+                {previewImage ? (
+                    <div>
+                      <Image
+                          src={previewImage}
+                          roundedCircle
+                          width={120}
+                          height={120}
+                          alt="프로필 미리보기"
+                          className="mb-2 d-block mx-auto"
+                      />
+                      <p className="text-muted mb-0">
+                        이미지를 클릭 또는 드래그해서 변경하세요
+                      </p>
+                    </div>
+                ) : (
+                    <p className="text-muted mb-0">
+                      여기에 이미지를 드래그하거나 클릭하여 업로드하세요
+                    </p>
+                )}
               </div>
-            ) : (
-              <p className="text-muted mb-0">
-                여기에 이미지를 드래그하거나 클릭하여 업로드하세요
-              </p>
-            )}
-          </div>
 
-          <Form.Control
-            type="file"
-            accept="image/*"
-            name="profileImage"
-            id="profileImageInput"
-            style={{ display: "none" }}
-            onChange={handleChange}
-          />
-        </Form.Group>
+              <Form.Control
+                  type="file"
+                  accept="image/*"
+                  name="profileImage"
+                  id="profileImageInput"
+                  style={{display: "none"}}
+                  onChange={handleChange}
+              />
+            </Form.Group>
 
-        {/* 인증 코드 */}
-        <Form.Group className="mb-4" controlId="formAuthCode">
-          <Form.Label>프디아 인증 코드</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="인증 코드를 입력하세요"
-            name="authCode"
-            value={form.authCode}
-            onChange={handleChange}
-            required
-          />
-        </Form.Group>
+            {/* 인증 코드 */}
+            <Form.Group className="mb-4" controlId="formAuthCode">
+              <Form.Label>프디아 인증 코드</Form.Label>
+              <Form.Control
+                  type="text"
+                  placeholder="인증 코드를 입력하세요"
+                  name="authCode"
+                  value={form.authCode}
+                  onChange={handleChange}
+                  required
+              />
+            </Form.Group>
 
-        {/* 제출 버튼 */}
+            {/* 제출 버튼 */}
 
-        <Button variant="primary" type="submit" className="w-100">
-          회원가입
-        </Button>
-        <div className="h-20"></div>
-      </Form>
-    </Container>
-  );
-}
+            <Button variant="primary" type="submit" className="w-100">
+              회원가입
+            </Button>
+            <div className="h-20"></div>
+          </Form>
+        </Container>
+    );
+  };

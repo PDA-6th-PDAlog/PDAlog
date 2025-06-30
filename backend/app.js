@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger/swagger-output.json");
+require('./service/ScheduledThumbnailUpdater');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
