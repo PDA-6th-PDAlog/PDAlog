@@ -19,9 +19,7 @@ export default function myStudyOtherPersonPage() {
         const fetchStudyTeamInfo = async () => {
             try {
                 const res = await fetch(`${getApiBaseUrl()}/myStudyInfo/${StudyRoomId}/${studyId}`);
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                 const data = await res.json();
                 setTeamInfo(data);
             } catch (err) {
@@ -29,8 +27,10 @@ export default function myStudyOtherPersonPage() {
             }
         };
 
-        fetchStudyTeamInfo();
-    }, []);
+        if (StudyRoomId && studyId) {
+            fetchStudyTeamInfo();
+        }
+    }, [StudyRoomId, studyId]); // ✅ 의존성 배열에 추가
 
     if (!teamInfo) return <div>로딩 중...</div>;
 

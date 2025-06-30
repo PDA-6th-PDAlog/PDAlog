@@ -9,7 +9,7 @@ import { useRouter, useParams } from "next/navigation";
 import { useUser } from "@/layouts/common/UserContext";
 
 export default function MyStudyInfoPage() {
-    const params = useParams(); // params를 훅으로 안전하게 받아옴
+    const params = useParams();
     const router = useRouter();
     const { user } = useUser();
 
@@ -33,7 +33,7 @@ export default function MyStudyInfoPage() {
 
                     if (res.status === 403) {
                         alert("현재 참여한 스터디만 입장 가능합니다.");
-                        router.push("/"); // 홈으로 리다이렉트
+                        router.push("/");
                         return;
                     }
 

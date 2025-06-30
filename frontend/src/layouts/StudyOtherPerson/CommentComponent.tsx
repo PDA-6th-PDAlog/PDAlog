@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useUser } from "@/layouts/common/UserContext";
 import Link from "next/link";
 
@@ -15,7 +15,12 @@ interface Comment {
     study_room_id: number;
 }
 
-export default function CommentSection({ studyRoomId, studyMemberId }: any) {
+interface CommentSectionProps {
+    studyRoomId: string | number;
+    studyMemberId: string | number;
+}
+
+export default function CommentSection({ studyRoomId, studyMemberId }: CommentSectionProps) {
     const { user } = useUser();
 
     const [comments, setComments] = useState<Comment[]>([]);
@@ -36,8 +41,7 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
         return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
     }
 
-
-    const fetchComments = async () => {
+    const fetchComments = useCallback(async () => {
         try {
             const res = await fetch(
                 `${getApiBaseUrl()}/myStudyInfo/comment/${studyRoomId}/${studyMemberId}`
@@ -48,11 +52,11 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
         } catch (error) {
             console.error("댓글 불러오기 실패", error);
         }
-    };
+    }, [studyRoomId, studyMemberId]);
 
     useEffect(() => {
         fetchComments();
-    }, [studyRoomId, studyMemberId]);
+    }, [fetchComments]);
 
     const handleSubmit = async () => {
         if (!input.trim()) return;
@@ -110,7 +114,7 @@ export default function CommentSection({ studyRoomId, studyMemberId }: any) {
                             <img
                                 src={c.user_profile || "/default-profile.png"}
                                 alt={`${c.user_name} 프로필`}
-                                className="w-16 h-16 rounded-full object-cover flex-shrink-0 border border-gray-300 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-130"
+                                className="w-16 h-16 rounded-full object-cover flex-shrink-0 border border-gray-300 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110"
                                 onError={(e) => {
                                     e.currentTarget.onerror = null;
                                     e.currentTarget.src = "/default-profile.png";

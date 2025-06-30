@@ -58,7 +58,7 @@ export default function HomePage() {
         });
 
         if (!res.ok) {
-          let errorText = await res.text();
+          const errorText = await res.text();
           console.error("서버 오류:", res.status, errorText); // Log status and error body
           return;
         }

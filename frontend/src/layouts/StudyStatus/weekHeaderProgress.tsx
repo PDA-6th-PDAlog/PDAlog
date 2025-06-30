@@ -1,4 +1,3 @@
-import ProgressBarComponent from "@/layouts/StudyStatus/ProgressBarComponent";
 import ProgressDonutChart from "@/layouts/StudyStatus/ProgressDonutChart";
 
 interface WeekHeaderProps {
