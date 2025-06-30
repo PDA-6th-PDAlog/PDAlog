@@ -2,23 +2,25 @@
 
 import StudyProofSection from "@/layouts/StudyOtherPerson/StudyProofComponent";
 import CommentSection from "@/layouts/StudyOtherPerson/CommentComponent"
-import {useEffect, useState} from "react";
-import {useParams} from "next/navigation";
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 
 export default function myStudyOtherPersonPage() {
     const [teamInfo, setTeamInfo] = useState(null);
 
     const { StudyRoomId, studyId } = useParams();
 
+    const safeStudyRoomId = Array.isArray(StudyRoomId) ? StudyRoomId[0] : StudyRoomId;
+    const safeStudyMemberId = Array.isArray(studyId) ? studyId[0] : studyId;
+
     function getApiBaseUrl(): string {
         return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
     }
 
-
     useEffect(() => {
         const fetchStudyTeamInfo = async () => {
             try {
-                const res = await fetch(`${getApiBaseUrl()}/myStudyInfo/${StudyRoomId}/${studyId}`);
+                const res = await fetch(`${getApiBaseUrl()}/myStudyInfo/${safeStudyRoomId}/${safeStudyMemberId}`);
                 if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                 const data = await res.json();
                 setTeamInfo(data);
@@ -27,25 +29,25 @@ export default function myStudyOtherPersonPage() {
             }
         };
 
-        if (StudyRoomId && studyId) {
+        if (safeStudyRoomId && safeStudyMemberId) {
             fetchStudyTeamInfo();
         }
-    }, [StudyRoomId, studyId]); // ✅ 의존성 배열에 추가
+    }, [safeStudyRoomId, safeStudyMemberId]);
 
     if (!teamInfo) return <div>로딩 중...</div>;
 
-    const {getmyTeamInfoList} = teamInfo;
+    const { getmyTeamInfoList } = teamInfo;
 
-    return(
+    return (
         <div className="p-14 min-h-screen pl-40 pr-40">
             <div className="flex flex-col p-4 gap-4">
-                <StudyProofSection
-                    getmyTeamInfoList={getmyTeamInfoList}/>
-                {/*<StatisticsSection/>*/}
+                <StudyProofSection getmyTeamInfoList={getmyTeamInfoList} />
+                {/* <StatisticsSection /> */}
                 <CommentSection
-                    studyRoomId={StudyRoomId}
-                    studyMemberId={studyId}/>
+                    studyRoomId={safeStudyRoomId}
+                    studyMemberId={safeStudyMemberId}
+                />
             </div>
         </div>
-    )
+    );
 }
