@@ -180,7 +180,7 @@ export default function HomePage() {
         >
           <div className="pl-17 pr-10">
             <Container
-              style={{ maxWidth: "1100px", margin: "0 auto", padding: "1rem" }}
+              style={{ maxWidth: "1050px", margin: "0 auto", padding: "1rem" }}
             >
               <StudySection
                 title="내가 참여한 스터디"
