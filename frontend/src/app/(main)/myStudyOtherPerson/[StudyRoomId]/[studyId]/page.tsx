@@ -1,22 +1,24 @@
 "use client"
 
 import StudyProofSection from "@/layouts/StudyOtherPerson/StudyProofComponent";
-import StatisticsSection from "@/layouts/StudyOtherPerson/StatisticsComponent"
 import CommentSection from "@/layouts/StudyOtherPerson/CommentComponent"
 import {useEffect, useState} from "react";
 import {useParams} from "next/navigation";
 
 export default function myStudyOtherPersonPage() {
     const [teamInfo, setTeamInfo] = useState(null);
-    //요청받은 파라미터 아이티는 팀원 아이디임
 
     const { StudyRoomId, studyId } = useParams();
+
+    function getApiBaseUrl(): string {
+        return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+    }
 
 
     useEffect(() => {
         const fetchStudyTeamInfo = async () => {
             try {
-                const res = await fetch(`http://localhost:3001/myStudyInfo/${StudyRoomId}/${studyId}`);
+                const res = await fetch(`${getApiBaseUrl()}/myStudyInfo/${StudyRoomId}/${studyId}`);
                 if (!res.ok) {
                     throw new Error(`HTTP error! status: ${res.status}`);
                 }
@@ -40,7 +42,9 @@ export default function myStudyOtherPersonPage() {
                 <StudyProofSection
                     getmyTeamInfoList={getmyTeamInfoList}/>
                 {/*<StatisticsSection/>*/}
-                {/*<CommentSection/>*/}
+                <CommentSection
+                    studyRoomId={StudyRoomId}
+                    studyMemberId={studyId}/>
             </div>
         </div>
     )

@@ -2,7 +2,7 @@ import pool from "../config/db.js";
 import bcrypt from "bcrypt";
 
 export async function create(userData) {
-  const { username, email, passwd, profile_image } = userData;
+  const { username, email, passwd, profile_image} = userData;
 
   try {
     const saltRounds = 10;

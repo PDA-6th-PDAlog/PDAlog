@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import ProgressBarComponent from "./ProgressBarComponent";
+import Link from "next/link";
 
 export default function CalendarAndProgressList({
                                                     MemberProfile,
@@ -48,15 +49,25 @@ export default function CalendarAndProgressList({
                 {mergedMembers.map((m: any) => (
                     <div
                         key={m.user_id}
-                        className="flex items-center pl-5 gap-2 w-75 border-gray-400 border-1 rounded-2xl p-1 cursor-pointer hover:bg-gray-100"
+                        className="flex items-center pl-5 gap-2 w-75 border border-gray-400 rounded-2xl p-1 cursor-pointer hover:bg-gray-100"
                         onClick={() => goToPersonPage(m.user_id)}
                     >
-                        <img
-                            src={m.user_profile || "/assets/person.png"}
-                            alt={m.username}
-                            className="w-8 h-8 rounded-full object-cover"
-                            onError={(e) => (e.currentTarget.src = "/assets/person.png")}
-                        />
+                        <Link
+                            href={`/profile/${m.user_id}`}
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex-shrink-0"
+                        >
+                            <img
+                                src={m.user_profile || "/assets/person.png"}
+                                alt={m.username}
+                                className="w-10 h-10 aspect-square rounded-full object-cover border border-gray-300 transition-transform duration-200 ease-in-out hover:scale-150"
+                                onError={(e) => {
+                                    e.currentTarget.onerror = null;
+                                    e.currentTarget.src = "/assets/person.png";
+                                }}
+                            />
+                        </Link>
+
                         <span className="text-sm font-medium w-24">{m.username}</span>
                         <ProgressBarComponent progress={m.count} total={weeklyRequiredCount} />
                     </div>

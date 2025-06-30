@@ -5,6 +5,7 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger/swagger-output.json");
+require('./service/ScheduledThumbnailUpdater');
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
@@ -27,9 +28,21 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 
+const allowedOrigins = [
+    "http://localhost:3000",
+    "http://3.38.218.182:3000",
+    "http://ec2-3-38-218-182.ap-northeast-2.compute.amazonaws.com:3000"
+];
+
 app.use(cors({
-  origin: "http://localhost:3000",
-  credentials: true
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    credentials: true
 }));
 
 app.use(

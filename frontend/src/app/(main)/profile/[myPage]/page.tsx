@@ -8,6 +8,10 @@ export default function Page() {
   const params = useParams<{ myPage: string }>();
   const userId = params.myPage;
 
+  function getApiBaseUrl(): string {
+    return process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:3001";
+  }
+
   const [userData, setUserData] = useState<{
     username: string;
     email: string;
@@ -27,7 +31,7 @@ export default function Page() {
     }
     const fetchData = async () => {
       try {
-        const res = await fetch(`http://localhost:3001/profile/${userId}`);
+        const res = await fetch(`${getApiBaseUrl()}/profile/${userId}`);
         const result = await res.json();
         setToday(result.day);
         console.log("응답 데이터:", result.day);
@@ -81,7 +85,7 @@ export default function Page() {
               <img
                 src={userData.profile_image}
                 alt="Profile"
-                className="w-16 h-16 rounded-2xl object-cover shadow-lg"
+                className="w-16 h-16 rounded-2xl object-cover"
               />
             ) : (
               <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
@@ -227,6 +231,7 @@ export default function Page() {
         </div>
 
         {/* Stats Cards */}
+
         {/* <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-2xl p-6 shadow-sm border-0">
             <div className="text-2xl font-bold text-gray-900 mb-1">
