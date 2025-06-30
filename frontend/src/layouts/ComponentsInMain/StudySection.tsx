@@ -1,10 +1,10 @@
 //StudySection.tsx
 "use client";
 
-import { linkSync } from "fs";
+// import { linkSync } from "fs";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { UserProvider, useUser } from "../common/UserContext";
+// import { useEffect, useState } from "react";
+// import { UserProvider, useUser } from "../common/UserContext";
 
 interface Study {
   id: number;
@@ -34,7 +34,7 @@ export default function StudySection({
   createBoxLink,
 }: StudySectionProps) {
   const router = useRouter();
-  const { user, isLoggedIn } = useUser();
+  // const { user, isLoggedIn } = useUser();
   // // 컴포넌트 렌더링
   // // 전체 스터디 목록을 렌더링
   return (
@@ -45,6 +45,7 @@ export default function StudySection({
         // boxShadow: "0 4px 10px rgba(0, 0, 0, 0.15)",
         marginBottom: "2rem",
         padding: "1rem",
+        paddingBottom: "3rem",
       }}
     >
       <h2 style={{ fontSize, marginBottom: "1rem", fontWeight: "bold" }}>
@@ -79,7 +80,7 @@ export default function StudySection({
             <div
               style={{
                 width: "100%",
-                height: "70%",
+                height: "80%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -112,7 +113,7 @@ export default function StudySection({
             <div
               style={{
                 width: "100%",
-                height: "30%",
+                height: "20%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",

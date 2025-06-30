@@ -56,13 +56,13 @@ export default function PenaltyBarChart() {
         width: "100%",
         height: "50vh",
         padding: "1rem",
-        borderLeft: "1px solid #ccc",
-        borderRight: "1px solid #ccc",
+        // borderLeft: "1px solid #ccc",
+        // borderRight: "1px solid #ccc",
         marginBottom: "2rem",
       }}
     >
-      <h3 style={{ color: "black", textAlign: "center", marginBottom: "1rem" }}>
-        ⚠️ 각 스터디별 벌금랭킹 ⚠️
+      <h3 style={{ color: "black", textAlign: "center", marginBottom: "1rem", paddingTop: "4rem" }}>
+        ⚠️ Penalty Ranking by Study ⚠️
       </h3>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>

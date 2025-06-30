@@ -174,32 +174,35 @@ export default function HomePage() {
         <main
           style={{
             borderLeft: "1px solid #ccc",
-            borderRight: "1px solid #ccc",
+            // borderRight: "1px solid #ccc",
             flexGrow: 1,
           }}
         >
-          <Container
-            style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem" }}
-          >
-            <StudySection
-              title="참여중인 스터디"
-              list={myStudies}
-              link="/myStudyInfo"
-              fontSize="1.5rem"
-              createBoxLink="/createStudy"
-              boxTitle="새로운 스터디 만들기"
-            />
-            <StudySection
-              title="다른 스터디 둘러보기"
-              list={studies}
-              link="/studyInfo"
-              fontSize="1.5rem"
-              createBoxLink="/createStudy"
-              boxTitle="스터디 더 둘러보기"
-            />
-            <PenaltyBarChart />
-            {/*<PenaltyBarChart data={penalties} />*/}
-          </Container>
+          <div className="pl-4 pr-4">
+            <Container
+              style={{ maxWidth: "1200px", margin: "0 auto", padding: "1rem" }}
+            >
+              <StudySection
+                title="My Study"
+                list={myStudies}
+                link="/myStudyInfo"
+                fontSize="1.5rem"
+                createBoxLink="/createStudy"
+                boxTitle="새로운 스터디 만들기"
+              />
+              <div className="pb-6"></div>
+              <StudySection
+                title="Study List"
+                list={studies}
+                link="/studyInfo"
+                fontSize="1.5rem"
+                createBoxLink="/createStudy"
+                boxTitle="스터디 더 둘러보기"
+              />
+              <PenaltyBarChart />
+              {/*<PenaltyBarChart data={penalties} />*/}
+            </Container>
+          </div>
         </main>
 
         <PenaltySidebar users={userPenalties} />

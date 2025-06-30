@@ -107,7 +107,7 @@ export default function Page() {
         <div className="bg-gray-50 rounded-2xl shadow-sm border-0 overflow-hidden">
           <div className="p-6 pb-4">
             <h2 className="text-xl font-bold text-gray-900 mb-6">
-              참여중인 스터디
+              나의 스터디
               <span className="float-right text-blue-600 text-xl font-bold">
                 {studyData.length}개
               </span>
