@@ -34,7 +34,7 @@ const PenaltySidebar = ({ users }: PenaltySidebarProps) => {
           letterSpacing: "1px",
         }}
       >
-        지난주 벌금 순위
+        누적 벌금 순위
       </h3>
       <ul style={{ listStyle: "none", padding: 0, paddingLeft: "1.5rem" }}>
         {users.map((user) => (
