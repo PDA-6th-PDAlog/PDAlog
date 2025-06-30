@@ -23,6 +23,7 @@ interface StudySectionProps {
   fontSize?: string;
   link?: string;
   createBoxLink?: string;
+  boxTitle: string;
 }
 
 export default function StudySection({
