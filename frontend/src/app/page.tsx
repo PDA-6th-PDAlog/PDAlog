@@ -48,7 +48,7 @@ export default function HomePage() {
         const token = Cookies.get("authToken");
         console.log("[fetchMyStudies] token:", token); // DEBUG: print token
 
-        const res = await fetch("http://localhost:3001/my-studies", {
+        const res = await fetch(`${getApiBaseUrl()}/my-studies`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
