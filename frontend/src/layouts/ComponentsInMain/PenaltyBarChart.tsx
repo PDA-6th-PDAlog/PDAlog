@@ -61,8 +61,15 @@ export default function PenaltyBarChart() {
         marginBottom: "2rem",
       }}
     >
-      <h3 style={{ color: "black", textAlign: "center", marginBottom: "1rem", paddingTop: "4rem" }}>
-        ⚠️ Penalty Ranking by Study ⚠️
+      <h3
+        style={{
+          color: "black",
+          textAlign: "center",
+          marginBottom: "1rem",
+          paddingTop: "4rem",
+        }}
+      >
+        ⚠️ 지난주 스터디별 벌금순위 ⚠️
       </h3>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={data}>

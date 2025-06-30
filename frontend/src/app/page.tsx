@@ -183,7 +183,7 @@ export default function HomePage() {
               style={{ maxWidth: "1200px", margin: "0 auto", padding: "1rem" }}
             >
               <StudySection
-                title="My Study"
+                title="내가 참여한 스터디"
                 list={myStudies}
                 link="/myStudyInfo"
                 fontSize="1.5rem"
@@ -192,7 +192,7 @@ export default function HomePage() {
               />
               <div className="pb-6"></div>
               <StudySection
-                title="Study List"
+                title="다른 스터디 둘러보기"
                 list={studies}
                 link="/studyInfo"
                 fontSize="1.5rem"

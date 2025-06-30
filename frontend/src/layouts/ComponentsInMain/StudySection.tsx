@@ -32,6 +32,7 @@ export default function StudySection({
   fontSize = "1.25rem",
   link,
   createBoxLink,
+  boxTitle,
 }: StudySectionProps) {
   const router = useRouter();
   // const { user, isLoggedIn } = useUser();
@@ -161,7 +162,7 @@ export default function StudySection({
             e.currentTarget.style.backgroundColor = "white";
           }}
         >
-          스터디생성하기
+          {boxTitle}
           <div
             style={{
               fontSize: "1rem",
